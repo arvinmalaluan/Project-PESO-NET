@@ -1,7 +1,0 @@
-{
-  "name": "client-side",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "angular"
-}
