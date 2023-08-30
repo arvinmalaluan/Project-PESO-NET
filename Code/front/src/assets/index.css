@@ -1,0 +1,39 @@
+* {
+  font-family: "Roboto", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: whitesmoke;
+  overflow-y: scroll;
+}
+
+.navigation-bar {
+  /* TODO: Navigation bar styling */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  user-select: none;
+
+  height: 64px;
+  padding: 0 50px;
+}
+
+.nav-icon-btn {
+  height: 40px;
+  width: 40px;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+  opacity: 0.8;
+  font-weight: lighter;
+}
+
+a.active {
+  color: blue;
+  font-weight: bold;
+}
