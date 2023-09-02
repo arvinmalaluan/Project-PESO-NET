@@ -7,9 +7,9 @@ function Home() {
   return (
     <>
       <Grid item md={2.5}>
-        <SideNavigation />
+        <SideNavigation type="home" />
       </Grid>
-      <Grid item md={9.5} pl={4}>
+      <Grid item md={9.5}>
         <Grid item md={4}>
           <CardTemplate uniqueId="1" />
         </Grid>

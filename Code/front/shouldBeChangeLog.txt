@@ -1,0 +1,4 @@
+- change icon button for bookmark or any interaction button into a checkbox
+- disable ripple effect on some buttons/checkbox
+- disable user select on some text
+- profile post image should be align items start

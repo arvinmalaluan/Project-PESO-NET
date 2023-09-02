@@ -7,7 +7,7 @@ function Jobs() {
   const { jobId } = useParams();
 
   return (
-    <Grid container>
+    <>
       <Grid item md={jobId ? 3 : 12}>
         <Grid container spacing={2}>
           <Grid item md={jobId ? 12 : 3}>
@@ -27,7 +27,7 @@ function Jobs() {
       <Grid item pl={4} display={jobId ? "block" : "none"} md={9}>
         <Outlet />
       </Grid>
-    </Grid>
+    </>
   );
 }
 

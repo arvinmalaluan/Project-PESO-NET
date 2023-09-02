@@ -12,11 +12,14 @@ import MessageTemplate from "../menu/MessageTemplate";
 import ProfileTemplate from "../menu/ProfileTemplate";
 
 import { avatarItems } from "./../../utils/constants";
+import { useNavigate } from "react-router-dom";
 
 export default function MenuPopup({ anchor, setAnchor, visible, btnId }) {
   const handleClose = () => {
     setAnchor(null);
   };
+
+  const navigate = useNavigate();
 
   const getTitle =
     btnId === "avatar-btn"
@@ -47,7 +50,12 @@ export default function MenuPopup({ anchor, setAnchor, visible, btnId }) {
           <Divider sx={{ marginBottom: 1 }} />
           {btnId === "avatar-btn" ? (
             <>
-              <MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("profile");
+                  setAnchor(null);
+                }}
+              >
                 <Avatar />
                 <Typography variant="body1" fontWeight="bold" ml={2}>
                   Arvin Malaluan
@@ -61,6 +69,8 @@ export default function MenuPopup({ anchor, setAnchor, visible, btnId }) {
                     uniqueId={items.id}
                     name={items.name}
                     icon={items.icon}
+                    path={items.path}
+                    set={setAnchor}
                   />
                 );
               })}

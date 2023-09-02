@@ -13,7 +13,7 @@ import {
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
-function SideNavigation() {
+function SideNavigation({ type }) {
   const SetAvatar = () => {
     return (
       <Avatar
@@ -86,9 +86,15 @@ function SideNavigation() {
         <Divider />
         <CardActions>
           <Stack width="100%">
-            <SetCardActions name="Manage Resume" />
-            <SetCardActions name="View Application Status" />
-            <SetCardActions name="View Saved Jobs" />
+            {type === "home" ? (
+              <>
+                <SetCardActions name="Manage Resume" />
+                <SetCardActions name="View Application Status" />
+                <SetCardActions name="View Saved Jobs" />
+              </>
+            ) : (
+              <SetCardActions name="Manage Queries" />
+            )}
           </Stack>
         </CardActions>
       </Card>

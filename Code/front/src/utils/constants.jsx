@@ -20,28 +20,38 @@ export const avatarItems = [
     id: "go-to-resume",
     name: "Manage Resume",
     icon: <PostAddIcon style={iconStyles} />,
+    path: "resume",
   },
   {
     id: "go-to-saved",
     name: "My Saved Jobs",
     icon: <BookmarkIcon style={iconStyles2} />,
+    path: "saved",
   },
   {
     id: "go-to-status",
     name: "My Application Status",
     icon: <PunchClockIcon style={iconStyles2} />,
+    path: "status",
   },
   {
     id: "go-to-settings",
     name: "Settings",
     icon: <SettingsIcon style={iconStyles} />,
+    path: "settings",
   },
   {
     id: "give-feedback",
     name: "Provide Feedback",
     icon: <FeedbackIcon style={iconStyles2} />,
+    path: "give-feedback",
   },
-  { id: "logout", name: "Logout", icon: <LogoutIcon style={iconStyles2} /> },
+  {
+    id: "logout",
+    name: "Logout",
+    icon: <LogoutIcon style={iconStyles2} />,
+    path: "logout",
+  },
 ];
 
 export const responsibilities = [
