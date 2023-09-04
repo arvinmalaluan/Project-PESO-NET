@@ -1,11 +1,10 @@
 import { MoreVert } from "@mui/icons-material";
+
 import {
   Avatar,
   Button,
   Card,
-  CardContent,
   CardHeader,
-  Divider,
   Grid,
   IconButton,
   Stack,
@@ -16,40 +15,45 @@ import ProfilePost from "../components/common/ProfilePost";
 function Profile() {
   return (
     <>
-      <Stack ml={2} bgcolor="#fff">
-        <Stack
-          bgcolor="blue"
-          sx={{ height: 250, bgcolor: "cadetblue" }}
-        ></Stack>
-        <Avatar
-          style={{ height: 90, width: 90, marginTop: "-45px", marginLeft: 16 }}
-        />
-        <Stack direction="row" alignItems="start" width="100%" p={2}>
-          <Stack width="50%" flexGrow={1}>
-            <Typography variant="h5">ARVIN MALALUAN</Typography>
-            <Typography
-              width="80%"
-              mt={0.5}
-              fontSize={14}
-              color="rgba(0,0,0,0.8)"
-            >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-              reprehenderit optio unde? Sint atque nihil non temporibus nulla
-              quibusdam, minus necessitatibus fugiat officia molestias magni
-              accusantium voluptas incidunt in doloribus?
-            </Typography>
+      <Grid item md={12}>
+        <Card bgcolor="#fff">
+          <Stack
+            bgcolor="blue"
+            sx={{ height: 250, bgcolor: "cadetblue" }}
+          ></Stack>
+          <Avatar
+            style={{
+              height: 90,
+              width: 90,
+              marginTop: "-45px",
+              marginLeft: 16,
+              border: "5px solid #fff",
+            }}
+          />
+          <Stack direction="row" alignItems="start" width="100%" p={2}>
+            <Stack width="50%" flexGrow={1}>
+              <Typography fontSize={24} fontWeight={500}>
+                ARVIN MALALUAN
+              </Typography>
+              <Typography width="80%" mt={0.5} fontSize={14} color="#333333">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
+                reprehenderit optio unde? Sint atque nihil non temporibus nulla
+                quibusdam, minus necessitatibus fugiat officia molestias magni
+                accusantium voluptas incidunt in doloribus?
+              </Typography>
+            </Stack>
+            <Stack direction="row" spacing={2}>
+              <IconButton>
+                <MoreVert />
+              </IconButton>
+              <Button variant="outlined">Message</Button>
+              <Button variant="contained" disableElevation>
+                Hire me
+              </Button>
+            </Stack>
           </Stack>
-          <Stack direction="row" spacing={2}>
-            <IconButton>
-              <MoreVert />
-            </IconButton>
-            <Button variant="outlined">Message</Button>
-            <Button variant="contained" disableElevation>
-              Hire me
-            </Button>
-          </Stack>
-        </Stack>
-      </Stack>
+        </Card>
+      </Grid>
 
       <Grid item md={4}>
         <Stack spacing={2}>

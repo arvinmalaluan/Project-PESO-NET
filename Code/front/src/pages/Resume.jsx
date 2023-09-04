@@ -1,9 +1,12 @@
-import { Button, Stack, TextField, Typography } from "@mui/material";
+import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import ResumeStepper from "../components/resume/ResumeStepper";
+import { useState } from "react";
 
 function Resume() {
+  const [activeStep, setActiveStep] = useState(0);
   return (
     <>
-      <Stack width="100%" ml={2}>
+      {/* <Stack width="100%" ml={2}>
         <Stack direction="row" justifyContent="end" spacing={2} mt={2}>
           <Button variant="outlined" color="warning">
             Cancel and discard changes
@@ -15,7 +18,7 @@ function Resume() {
         <Stack>
           <Typography variant="h6">Contact Information</Typography>
           <TextField placeholder="Full name" size="small" />
-          <TextField placeholder="PHone number" size="small" />
+          <TextField placeholder="Phone number" size="small" />
           <TextField placeholder="Email Address" size="small" />
           <TextField placeholder="Resume Objective" size="small" />
         </Stack>
@@ -31,10 +34,9 @@ function Resume() {
 
         <Stack>
           <Typography variant="h6">Education</Typography>
-          <TextField placeholder="Degree Earned" size="small" />
-          <TextField placeholder="Major / Field of Study" size="small" />
+          <TextField placeholder="Education level" size="small" />
           <TextField placeholder="Name of Institution" size="small" />
-          <TextField placeholder="Graduation Date" size="small" />
+          <TextField placeholder="Year graduated" size="small" />
           <TextField placeholder="Achievements" size="small" />
         </Stack>
 
@@ -76,7 +78,42 @@ function Resume() {
           <Typography variant="h6">References</Typography>
           <TextField placeholder="Enumerate references" size="small" />
         </Stack>
-      </Stack>
+      </Stack> */}
+
+      <Grid item md={12}>
+        <Stack bgcolor="#fff" pt={2}>
+          <ResumeStepper activeStep={activeStep} />
+        </Stack>
+
+        <Stack
+          pt={4}
+          pb={2}
+          direction="row"
+          bgcolor="#fff"
+          spacing={2}
+          justifyContent="center"
+        >
+          <Button
+            variant="contained"
+            disabled={activeStep === 0}
+            disableElevation
+            onClick={() => {
+              setActiveStep(activeStep - 1);
+            }}
+          >
+            Back
+          </Button>
+          <Button
+            variant="contained"
+            disableElevation
+            onClick={() => {
+              setActiveStep(activeStep + 1);
+            }}
+          >
+            {activeStep === 2 ? "Finish" : "Next"}
+          </Button>
+        </Stack>
+      </Grid>
     </>
   );
 }

@@ -1,9 +1,19 @@
 import { Avatar, Badge, MenuItem, Stack, Typography } from "@mui/material";
 
-function MessageTemplate() {
+import { useNavigate, useLocation } from "react-router-dom";
+
+function MessageTemplate({ uid, setAnchor }) {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   return (
     <>
-      <MenuItem>
+      <MenuItem
+        onClick={() => {
+          setAnchor(null);
+          navigate(`messages/${uid}`);
+        }}
+      >
         <Avatar />
 
         <Stack width="265px" ml={1}>

@@ -20,7 +20,18 @@ export default function Navigation() {
 
   return (
     <>
-      <Stack className="navigation-bar" direction="row">
+      <Stack
+        className="navigation-bar"
+        direction="row"
+        bgcolor="#fff"
+        mb={2}
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 99,
+          boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+        }}
+      >
         <Link to="/" style={{ opacity: 1 }}>
           <Typography>PESO-Lipa</Typography>
         </Link>

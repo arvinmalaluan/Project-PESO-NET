@@ -1,6 +1,9 @@
 import {
+  Bookmark,
   BookmarkBorderOutlined,
+  CorporateFare,
   LocationOnOutlined,
+  People,
   Share,
 } from "@mui/icons-material";
 import VerifiedIcon from "@mui/icons-material/Verified";
@@ -10,6 +13,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Checkbox,
   Chip,
   Grid,
   IconButton,
@@ -25,7 +29,7 @@ function JobDetails() {
     const array = [1, 2, 3, 4, 5];
     return (
       <>
-        <Typography variant="h6" mb={1} mt={2} fontWeight="500">
+        <Typography fontSize={16} mb={1} mt={2} fontWeight={500}>
           {title}
         </Typography>
 
@@ -33,7 +37,7 @@ function JobDetails() {
           sx={{
             fontSize: "14px",
             textAlign: "justify",
-            color: "rgba(0, 0, 0, 0.8)",
+            color: "#3333333",
           }}
         >
           At XYZ Company, we're seeking a motivated and dedicated individual to
@@ -57,10 +61,10 @@ function JobDetails() {
         <Chip
           label={
             <>
-              <Typography variant="body1" fontSize={12} mb={0.2}>
+              <Typography fontSize={12} mb={0.2}>
                 {label}
               </Typography>
-              <Typography variant="body1" fontWeight={500}>
+              <Typography fontSize={14} fontWeight={500}>
                 {content}
               </Typography>
             </>
@@ -70,7 +74,7 @@ function JobDetails() {
             height: "auto",
             textAlign: "center",
             bgcolor: "whitesmoke",
-            borderRadius: "10px",
+            borderRadius: "5px",
           }}
         />
       </>
@@ -81,10 +85,12 @@ function JobDetails() {
     <Card
       sx={{
         height: "calc(100vh - 5%)",
+        position: "sticky",
+        top: 80,
       }}
     >
       <Grid container height="100%">
-        <Grid item md={8.5} height="100%">
+        <Grid item md={8} height="100%">
           <CardHeader
             avatar={
               <Avatar
@@ -99,14 +105,14 @@ function JobDetails() {
               />
             }
             title={
-              <Typography variant="h4" mb={0.5} fontWeight="400">
-                Ui/Ux Designer
+              <Typography fontSize={36} fontWeight="500">
+                UI/UX Designer
               </Typography>
             }
             subheader={
               <>
-                <Stack direction="row" alignItems="center">
-                  <Typography variant="body2" color="#000" fontWeight="500">
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography fontSize={14} color="#333333" fontWeight="500">
                     Avatar, Inc.
                   </Typography>
                   <VerifiedIcon
@@ -114,19 +120,22 @@ function JobDetails() {
                       color: "#00acee",
                       height: "16px",
                       width: "16px",
-                      marginLeft: "4px",
-                      marginRight: "8px",
                     }}
                   />
-                  {"• 216 applied for this"}
+                  <span>●</span>
+                  <Typography fontSize={14} color="#333333">
+                    216 applied for this
+                  </Typography>
                 </Stack>
               </>
             }
             action={
               <>
-                <IconButton>
-                  <BookmarkBorderOutlined />
-                </IconButton>
+                <Checkbox
+                  icon={<BookmarkBorderOutlined />}
+                  checkedIcon={<Bookmark />}
+                />
+
                 <IconButton>
                   <Share />
                 </IconButton>
@@ -190,7 +199,7 @@ function JobDetails() {
         </Grid>
         <Grid
           item
-          md={3.5}
+          md={4}
           height="100%"
           sx={{
             borderLeft: "1px solid rgba(0, 0, 0, 0.12)",
@@ -205,8 +214,8 @@ function JobDetails() {
                     variant="rounded"
                     style={{
                       backgroundColor: "transparent",
-                      height: "56px",
-                      width: "56px",
+                      height: "48px",
+                      width: "48px",
                       marginRight: 2,
                     }}
                     src="https://i.redd.it/bm9vgkgnnzfa1.jpg"
@@ -214,7 +223,7 @@ function JobDetails() {
                 }
                 title={
                   <>
-                    <Stack direction="row" alignItems="center" mb={0.5}>
+                    <Stack direction="row" alignItems="center">
                       <Typography variant="h6" fontWeight={500}>
                         Avatar, Inc.
                       </Typography>
@@ -229,58 +238,51 @@ function JobDetails() {
                     </Stack>
                   </>
                 }
-                subheader="Destroyer of galaxies"
+                subheader={
+                  <Typography fontSize={14} color="#333333">
+                    Destroyer of all
+                  </Typography>
+                }
               />
-              <Stack spacing={1} mt={2}>
+              <Stack spacing={1}>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <LocationOnOutlined />
-                  <Typography
-                    fontSize={14}
-                    fontWeight={300}
-                    color="rgba(0, 0, 0, 0.7)"
-                  >
+                  <LocationOnOutlined sx={{ height: 20, width: 20 }} />
+                  <Typography fontSize={12} color="#333333">
                     Simlong, Batangas City
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <LocationOnOutlined />
-                  <Typography
-                    fontSize={14}
-                    fontWeight={300}
-                    color="rgba(0, 0, 0, 0.7)"
-                  >
-                    Simlong, Batangas City
+                  <People sx={{ height: 20, width: 20 }} />
+                  <Typography fontSize={12} color="#333333">
+                    ??? employees
                   </Typography>
                 </Stack>
                 <Stack direction="row" spacing={1} alignItems="center">
-                  <LocationOnOutlined />
-                  <Typography
-                    fontSize={14}
-                    fontWeight={300}
-                    color="rgba(0, 0, 0, 0.7)"
-                  >
-                    Simlong, Batangas City
+                  <CorporateFare sx={{ height: 20, width: 20 }} />
+                  <Typography fontSize={12} color="#333333">
+                    ??? subsidiaries
                   </Typography>
                 </Stack>
               </Stack>
-            </Stack>
 
-            <Typography
-              variant="body2"
-              sx={{
-                fontSize: "14px",
-                display: "-webkit-box",
-                WebkitLineClamp: "4",
-                overflow: "hidden",
-                WebkitBoxOrient: "vertical",
-                textOverflow: "ellipsis",
-              }}
-            >
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Consectetur illum nisi pariatur fuga dicta provident quos?
-              Delectus, nostrum! Esse voluptas aut amet maiores est, quidem
-              accusamus quia consequuntur similique nihil.
-            </Typography>
+              <Typography
+                mt={2}
+                sx={{
+                  fontSize: "14px",
+                  color: "#333333",
+                  display: "-webkit-box",
+                  WebkitLineClamp: "5",
+                  overflow: "hidden",
+                  WebkitBoxOrient: "vertical",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                Consectetur illum nisi pariatur fuga dicta provident quos?
+                Delectus, nostrum! Esse voluptas aut amet maiores est, quidem
+                accusamus quia consequuntur similique nihil.
+              </Typography>
+            </Stack>
 
             <Stack spacing={1} justifyContent="end">
               <Button

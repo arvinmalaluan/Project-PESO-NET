@@ -12,20 +12,28 @@ import {
 
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
+import { useNavigate } from "react-router-dom";
 
 function SideNavigation({ type }) {
+  const navigate = useNavigate();
   const SetAvatar = () => {
     return (
       <Avatar
         src="https://plus.unsplash.com/premium_photo-1682124752476-40db22034a58?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1780&q=80"
-        sx={{ display: "block", margin: "auto" }}
+        sx={{
+          display: "block",
+          margin: "auto",
+          height: 72,
+          width: 72,
+          marginTop: 2,
+        }}
       />
     );
   };
 
   const SetTitle = ({ name }) => {
     return (
-      <Typography variant="p" fontSize={18} pt={2}>
+      <Typography variant="p" fontWeight={500} fontSize={18} pt={2}>
         {name}
       </Typography>
     );
@@ -35,11 +43,12 @@ function SideNavigation({ type }) {
     return (
       <Typography
         variant="p"
-        fontSize={12}
+        fontSize={14}
         pt={1}
         pb={5}
-        width="60%"
+        width="80%"
         margin="auto"
+        color="#333333"
       >
         {message}
       </Typography>
@@ -50,9 +59,13 @@ function SideNavigation({ type }) {
     return <IconButton>{icon}</IconButton>;
   };
 
-  const SetCardActions = ({ name }) => {
+  const SetCardActions = ({ name, path }) => {
     return (
-      <ListItemButton sx={{ padding: "8px 0 8px 8px" }} disableGutters>
+      <ListItemButton
+        sx={{ padding: "8px 0 8px 8px" }}
+        disableGutters
+        onClick={() => navigate(`${path}`)}
+      >
         <Typography flexGrow={1}>{name}</Typography>
         <ArrowRightIcon />
       </ListItemButton>
@@ -88,12 +101,12 @@ function SideNavigation({ type }) {
           <Stack width="100%">
             {type === "home" ? (
               <>
-                <SetCardActions name="Manage Resume" />
-                <SetCardActions name="View Application Status" />
-                <SetCardActions name="View Saved Jobs" />
+                <SetCardActions name="Manage Resume" path="resume" />
+                <SetCardActions name="View Application Status" path="status" />
+                <SetCardActions name="View Saved Jobs" path="saved" />
               </>
             ) : (
-              <SetCardActions name="Manage Queries" />
+              <SetCardActions name="Manage Queries" path="/profile" />
             )}
           </Stack>
         </CardActions>

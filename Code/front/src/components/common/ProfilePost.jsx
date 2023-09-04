@@ -7,6 +7,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 function ProfilePost() {
   return (
@@ -15,7 +16,10 @@ function ProfilePost() {
         <Stack width="100%" direction="row" alignItems="center">
           <ArrowRight />
           <Typography flexGrow={1}>
-            Posted in <b>Community</b>
+            Posted in{" "}
+            <Link>
+              <b>Community</b>
+            </Link>
           </Typography>
 
           <IconButton>
@@ -27,7 +31,7 @@ function ProfilePost() {
           mt={2}
           direction="row"
           width="100%"
-          alignItems="center"
+          alignItems="start"
           spacing={2}
         >
           <Avatar
@@ -39,7 +43,7 @@ function ProfilePost() {
             }}
           />
           <Stack spacing={2}>
-            <Typography>
+            <Typography color="#333333">
               Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum
               quaerat sint culpa saepe, sunt perferendis. Est, doloremque, fuga
               minus beatae non a sed tempore numquam temporibus fugit iusto ut

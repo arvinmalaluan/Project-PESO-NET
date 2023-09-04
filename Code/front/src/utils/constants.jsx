@@ -40,18 +40,18 @@ export const avatarItems = [
     icon: <SettingsIcon style={iconStyles} />,
     path: "settings",
   },
-  {
-    id: "give-feedback",
-    name: "Provide Feedback",
-    icon: <FeedbackIcon style={iconStyles2} />,
-    path: "give-feedback",
-  },
-  {
-    id: "logout",
-    name: "Logout",
-    icon: <LogoutIcon style={iconStyles2} />,
-    path: "logout",
-  },
+  // {
+  //   id: "give-feedback",
+  //   name: "Provide Feedback",
+  //   icon: <FeedbackIcon style={iconStyles2} />,
+  //   path: "give-feedback",
+  // },
+  // {
+  //   id: "logout",
+  //   name: "Logout",
+  //   icon: <LogoutIcon style={iconStyles2} />,
+  //   path: "logout",
+  // },
 ];
 
 export const responsibilities = [

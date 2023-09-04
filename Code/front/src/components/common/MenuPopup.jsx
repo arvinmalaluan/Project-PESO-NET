@@ -76,10 +76,56 @@ export default function MenuPopup({ anchor, setAnchor, visible, btnId }) {
               })}
             </>
           ) : btnId === "message-btn" ? (
-            <MessageTemplate />
+            <>
+              <Stack justifyContent="space-between" height="70vh">
+                <MessageTemplate setAnchor={setAnchor} uid={1} />
+                <MenuItem
+                  onClick={() => {
+                    navigate("messages");
+                    setAnchor(null);
+                  }}
+                  sx={{
+                    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+                    marginTop: 1,
+                  }}
+                >
+                  <Stack
+                    width="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography fontSize={14} color="primary">
+                      See all messages
+                    </Typography>
+                  </Stack>
+                </MenuItem>
+              </Stack>
+            </>
           ) : (
             <>
-              <NotificationTemplate />
+              <Stack justifyContent="space-between" height="70vh">
+                <NotificationTemplate />
+                <MenuItem
+                  onClick={() => {
+                    navigate("notifications");
+                    setAnchor(null);
+                  }}
+                  sx={{
+                    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+                    marginTop: 1,
+                  }}
+                >
+                  <Stack
+                    width="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Typography fontSize={14} color="primary">
+                      See all notifications
+                    </Typography>
+                  </Stack>
+                </MenuItem>
+              </Stack>
             </>
           )}
         </Stack>
