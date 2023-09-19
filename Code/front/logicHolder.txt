@@ -1,5 +1,0 @@
-splits joint array values using a delimiter
-
-const splittedArrayHolder = nameOfTheJointArrayValues.split('delimiter')
-
-

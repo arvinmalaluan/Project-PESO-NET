@@ -1,0 +1,50 @@
+import { Button, Stack, TextField } from "@mui/material";
+import { useState } from "react";
+import authenticate from "../../utils/authentication";
+
+function Login() {
+  const [formData, setFormData] = useState({
+    identifier: "",
+    password: "",
+  });
+
+  function handleIdChange(event) {
+    setFormData({ ...formData, ["identifier"]: event.target.value });
+  }
+
+  function handlePassChange(event) {
+    setFormData({ ...formData, ["password"]: event.target.value });
+  }
+
+  function handleSignin() {
+    const base_url = "http://127.0.0.1:8001";
+
+    authenticate(base_url, formData);
+  }
+
+  return (
+    <>
+      <Stack spacing={2}>
+        <TextField
+          placeholder="Email or username"
+          size="small"
+          onChange={handleIdChange}
+          helperText="* cannot be empty"
+          required
+        />
+        <TextField
+          placeholder="Password"
+          type="password"
+          size="small"
+          onChange={handlePassChange}
+          helperText="* cannot be empty"
+        />
+        <Button variant="contained" onClick={handleSignin}>
+          Sign in
+        </Button>
+      </Stack>
+    </>
+  );
+}
+
+export default Login;
