@@ -1,6 +1,7 @@
 import { Grid } from "@mui/material";
 import FilterTemp from "./filter";
 import Preview from "./preview";
+import JobLite from "./job_lite";
 
 function Saved() {
   return (
@@ -12,7 +13,7 @@ function Saved() {
         <Preview />
       </Grid>
       <Grid item md={5}>
-        Hello
+        <JobLite />
       </Grid>
     </>
   );

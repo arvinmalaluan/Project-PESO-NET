@@ -1,14 +1,22 @@
-from .serializers import UserAccountSerializer
+from .serializers import *
 from .models import Account
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework_simplejwt.tokens import RefreshToken
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 from django.contrib.auth.hashers import check_password
 
-# Create your views here.
+
+def create_token(data):
+    refresh = RefreshToken.for_user(data)
+    access_token = str(refresh.access_token)
+    refresh_token = str(refresh)
+    return {'access': access_token, 'refresh': refresh_token}
+
+
 @api_view(['POST'])
 def login(request):
     user = get_object_or_404(Account, Q(username=request.data['identifier']) | Q(email=request.data['identifier']))
@@ -17,13 +25,16 @@ def login(request):
     does_match = check_password(request.data['password'], user.password)
     if does_match:
         user = Account.objects.get(Q(email = request.data['identifier']) | Q(username = request.data['identifier']))
+
         fetch_data = {
-            'identifier': user.email,
+            'email': user.email,
+            'username': user.username,
             'role': user.role.id
         }
-
-        # Insert JWT here
-        return Response({'success': 1, 'data': fetch_data })
+        
+        token = create_token(user)
+        
+        return Response({'success': 1, 'tokens': token, 'data': fetch_data })
     
     return Response({'success': 0, 'message': 'invalid log in credential'})
 

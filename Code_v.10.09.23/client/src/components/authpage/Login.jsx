@@ -1,7 +1,7 @@
 import { Button, Grid, Link, Stack, Typography } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import TextF from "./textF";
-import authenticate from "./../../utils/authentication";
+import AuthContext from "../../context/AuthContext";
 
 function Login() {
   const [formData, setFormData] = useState({
@@ -14,18 +14,20 @@ function Login() {
     bool: false,
   });
 
+  const { login_user, acc_details } = useContext(AuthContext);
+
   const handleClick = () => {
     setCheckInput({ ...checkInput, bool: !checkInput.bool });
 
     if (Boolean(formData.identifier) && Boolean(formData.password)) {
-      authenticate(formData);
+      login_user(formData);
     }
   };
 
   return (
     <>
       <Grid item md={6} sm={12}>
-        <p>Simple hello</p>
+        <p>Simple hello {acc_details === null ? "hey" : acc_details.role} </p>
       </Grid>
       <Grid item md={6} sm={12}>
         <Stack width="60%" m="auto" spacing={5}>

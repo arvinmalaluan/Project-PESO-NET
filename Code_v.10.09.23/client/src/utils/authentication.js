@@ -8,7 +8,8 @@ const authenticate = async (formData) => {
     );
 
     if (response.data["success"]) {
-      alert("success");
+      alert(formData);
+      console.log(formData);
     } else {
       alert("error happened");
     }

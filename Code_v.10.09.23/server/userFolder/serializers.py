@@ -1,4 +1,8 @@
 from rest_framework import serializers
+
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 from .models import Account
 from django.contrib.auth.hashers import make_password
 
@@ -17,3 +21,5 @@ class UserAccountSerializer(serializers.ModelSerializer):
             validated_data['password'] = make_password(validated_data['password'])
 
         return super().update(instance, validated_data)
+    
+        
