@@ -8,11 +8,29 @@ import {
   CardActions,
   ListItemButton,
 } from "@mui/material";
+import { useEffect, useState } from "react";
 
+import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function SideNav({ type }) {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const { user_id } = jwt_decode(localStorage.getItem("token"));
+
+    const get_user_profile = async () => {
+      const response = await axios.get(
+        `http://127.0.0.1:8001/seeker/create-profile/${user_id}`
+      );
+
+      console.log(response.data);
+    };
+
+    get_user_profile();
+  }, []);
+
   const SetAvatar = () => {
     return (
       <Avatar

@@ -1,6 +1,9 @@
 from .serializers import *
 from .models import Account
 
+import jwt
+import secrets
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -11,6 +14,7 @@ from django.contrib.auth.hashers import check_password
 
 
 def create_token(data):
+
     refresh = RefreshToken.for_user(data)
     access_token = str(refresh.access_token)
     refresh_token = str(refresh)
@@ -25,16 +29,21 @@ def login(request):
     does_match = check_password(request.data['password'], user.password)
     if does_match:
         user = Account.objects.get(Q(email = request.data['identifier']) | Q(username = request.data['identifier']))
-
-        fetch_data = {
-            'email': user.email,
-            'username': user.username,
-            'role': user.role.id
+        
+        # token = create_token(user)
+        payload = {
+            "user_id": user.id,
+            "user_email": user.email,
+            "user_username": user.username,
+            "user_role": user.role.id
         }
+
+        secret_key = secrets.token_hex(32)
+        token = jwt.encode(payload, secret_key)
+
+        print(token)
         
-        token = create_token(user)
-        
-        return Response({'success': 1, 'tokens': token, 'data': fetch_data })
+        return Response({'success': 1, "token": token })
     
     return Response({'success': 0, 'message': 'invalid log in credential'})
 
@@ -48,6 +57,14 @@ def register(request):
         return Response({'success': 1 })
 
     return Response({'success': 0, 'message': serializer.errors})
+
+
+@api_view(['POST'])
+def get_user_info(request):
+    account = Account.objects.get(id=request.data['id'])
+    serializer = UserAccountSerializer(account)
+    
+    return Response({'data': serializer.data})
 
 
 @api_view(['PUT'])

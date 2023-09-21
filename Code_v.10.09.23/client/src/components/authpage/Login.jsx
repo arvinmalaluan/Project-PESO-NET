@@ -2,8 +2,11 @@ import { Button, Grid, Link, Stack, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import TextF from "./textF";
 import AuthContext from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     identifier: "",
     password: "",
@@ -14,7 +17,7 @@ function Login() {
     bool: false,
   });
 
-  const { login_user, acc_details } = useContext(AuthContext);
+  const { login_user } = useContext(AuthContext);
 
   const handleClick = () => {
     setCheckInput({ ...checkInput, bool: !checkInput.bool });
@@ -27,9 +30,15 @@ function Login() {
   return (
     <>
       <Grid item md={6} sm={12}>
-        <p>Simple hello {acc_details === null ? "hey" : acc_details.role} </p>
+        <p>Simple hello </p>
       </Grid>
-      <Grid item md={6} sm={12}>
+      <Grid
+        item
+        md={6}
+        sm={12}
+        height="100vh"
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
         <Stack width="60%" m="auto" spacing={5}>
           <Stack spacing={0.5}>
             <Typography fontSize={20} fontWeight={500}>
@@ -71,7 +80,11 @@ function Login() {
           <Stack>
             <Typography fontSize={12}>
               Not yet a member?{" "}
-              <Link sx={{ cursor: "pointer" }} fontWeight={500}>
+              <Link
+                sx={{ cursor: "pointer" }}
+                fontWeight={500}
+                onClick={() => navigate("register")}
+              >
                 Join now
               </Link>
             </Typography>

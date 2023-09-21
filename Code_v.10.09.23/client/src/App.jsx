@@ -16,20 +16,23 @@ import Resume from "./components/resume/Resume";
 import Saved from "./components/saved/Saved";
 import Status from "./components/status/Status";
 import PrivateRoutes from "./utils/route_guard";
+import { useContext } from "react";
+import AuthContext from "./context/AuthContext";
 
 function App() {
   return (
     <>
-      {Boolean(localStorage.getItem("authTokens")) && <TopNav />}
+      {Boolean(localStorage.getItem("token")) && <TopNav />}
       <Grid container spacing={5} sx={{ padding: "0 100px" }}>
         <Routes>
-          {Boolean(localStorage.getItem("authTokens")) ? (
+          {Boolean(localStorage.getItem("token")) ? (
             <Route path="" element={<Home />} />
           ) : (
             <Route path="" element={<Login />} />
           )}
           <Route path="register" element={<Signup />} />
           <Route path="*" element={<Login />} />
+
           <Route element={<PrivateRoutes />}>
             <Route path="jobs" element={<Jobs />}>
               <Route path=":job_id" element={<DetailsTemp />} />

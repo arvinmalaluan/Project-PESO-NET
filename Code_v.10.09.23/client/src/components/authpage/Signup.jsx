@@ -10,8 +10,11 @@ import {
 import { useState } from "react";
 import TextF from "./textF";
 import register from "./../../utils/registration";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     email: "",
     username: null,
@@ -68,7 +71,13 @@ function Signup() {
       <Grid item md={6} sm={12}>
         <p>Simple Hi</p>
       </Grid>
-      <Grid item md={6} sm={12}>
+      <Grid
+        item
+        md={6}
+        sm={12}
+        height="100vh"
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
         <Stack width="60%" m="auto" spacing={4}>
           <Stack spacing={0.5}>
             <Typography fontSize={20} fontWeight={500}>
@@ -144,7 +153,11 @@ function Signup() {
           <Stack>
             <Typography fontSize={12}>
               Already have an account?{" "}
-              <Link sx={{ cursor: "pointer" }} fontWeight={500}>
+              <Link
+                sx={{ cursor: "pointer" }}
+                fontWeight={500}
+                onClick={() => navigate("/")}
+              >
                 Log in
               </Link>
             </Typography>

@@ -1,4 +1,5 @@
 from rest_framework import generics
+from django.shortcuts import get_object_or_404
 
 from .models import Post, Comments, Engagement, Resume, Profile
 from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer
@@ -30,8 +31,11 @@ class ResumePut(generics.RetrieveUpdateAPIView):
 
 
 class ProfilePut(generics.RetrieveUpdateAPIView):
-    queryset = Profile.objects.all()
     serializer_class = ProfileSerializer
+
+    def get_object(self):
+        account = self.kwargs['account']
+        return get_object_or_404(Profile, account=account)
 
 
 class CommentPut(generics.RetrieveUpdateDestroyAPIView):

@@ -1,18 +1,24 @@
-import { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+
+import { createContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
-  const [tokens, setTokens] = useState(null);
-  const [user, setUser] = useState(() =>
-    localStorage.getItem("authTokens") ? "item" : null
+  const [token, setToken] = useState(
+    localStorage.getItem("token") ? localStorage.getItem("token") : null
   );
-  const [accDetails, setAccDetails] = useState(null);
 
-  console.log(accDetails);
+  const [user, setUser] = useState(
+    localStorage.getItem("token")
+      ? jwt_decode(localStorage.getItem("token"))
+      : null
+  );
+
+  console.log(user);
 
   const login_user = async (formData) => {
     try {
@@ -22,14 +28,11 @@ export const AuthProvider = ({ children }) => {
       );
 
       if (response.status === 200) {
-        setTokens(response.data.tokens);
-        setUser(response.data.tokens.access);
-        setAccDetails(response.data.data);
+        const data = response.data.token;
+        setToken(data);
+        setUser(jwt_decode(data));
 
-        localStorage.setItem(
-          "authTokens",
-          JSON.stringify(response.data.tokens)
-        );
+        localStorage.setItem("token", data);
 
         location.reload();
       }
@@ -38,13 +41,18 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const logout_user = () => {
+    localStorage.clear();
+    location.reload();
+  };
+
   const contextData = {
     // Data
     user: user,
-    acc_details: accDetails,
 
     // Functions
     login_user: login_user,
+    logout_user: logout_user,
   };
 
   return (

@@ -9,9 +9,12 @@ import {
 
 import up_acc from "./../../assets/upgrade_account.svg";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../../context/AuthContext";
 
 function ProfTemp({ setAnchor }) {
   const navigate = useNavigate();
+  const { logout_user } = useContext(AuthContext);
 
   const ProfItem = ({ name, path }) => {
     return (
@@ -96,7 +99,15 @@ function ProfTemp({ setAnchor }) {
       <Stack p="8px 16px 8px">
         <Divider />
       </Stack>
-      <ProfItem name="Log out" />
+
+      <Stack p="0px 16px" mb={1}>
+        <MenuItem
+          sx={{ padding: "8px 16px", bgcolor: "whitesmoke" }}
+          onClick={logout_user}
+        >
+          <Typography fontSize={14}>Log out</Typography>
+        </MenuItem>
+      </Stack>
     </>
   );
 }

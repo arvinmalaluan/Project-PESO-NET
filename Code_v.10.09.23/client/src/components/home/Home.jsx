@@ -7,6 +7,7 @@ import axios from "axios";
 
 function Home() {
   const [jobData, setJobData] = useState();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -21,6 +22,7 @@ function Home() {
 
     fetchData();
   }, []);
+
   return (
     <>
       <Grid item md={3}>

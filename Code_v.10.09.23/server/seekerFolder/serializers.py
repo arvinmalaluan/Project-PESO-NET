@@ -29,4 +29,4 @@ class ResumeSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = '__all__'
+        fields = ['name', 'photo', 'bio', 'social_links', 'location', 'portfolio_link', 'educational_attainment']
