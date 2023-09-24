@@ -1,6 +1,6 @@
 import { Avatar, Button, Stack, Typography } from "@mui/material";
 
-function Header() {
+function Header({ details }) {
   return (
     <>
       <Stack sx={{ border: "1px solid rgba(0, 0, 0, 0.12)" }}>
@@ -15,23 +15,40 @@ function Header() {
             justifyContent="space-between"
           >
             <Stack>
-              <Typography fontSize={32} fontWeight={500} mt={2}>
-                Arvin Malaluan
-              </Typography>
+              {details ? (
+                <Typography
+                  fontSize={24}
+                  fontWeight={500}
+                  mt={2}
+                  sx={{ textTransform: "uppercase" }}
+                >
+                  {details.name}
+                </Typography>
+              ) : (
+                "( name unset )"
+              )}
             </Stack>
             <Stack direction="row" spacing={2} mt={2}>
-              <Button variant="contained" disableElevation>
+              <Button
+                variant="contained"
+                disableElevation
+                sx={{ textTransform: "none" }}
+              >
                 Hire me!
               </Button>
-              <Button variant="outlined">Message</Button>
+              <Button variant="outlined" sx={{ textTransform: "none" }}>
+                Message
+              </Button>
             </Stack>
           </Stack>
-          <Typography fontSize={12} width="50%" mt={1}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus
-            esse magnam eaque nobis quae? Iusto eum, unde asperiores modi hic
-            laudantium nisi, commodi ratione nihil fugit quos architecto, harum
-            suscipit!
-          </Typography>
+          {details ? (
+            <Typography fontSize={12} width="50%" mt={1}>
+              {details.bio.split(0, 100) +
+                (details.bio.length > 100 ? "..." : "")}
+            </Typography>
+          ) : (
+            "( set bio )"
+          )}
         </Stack>
       </Stack>
     </>

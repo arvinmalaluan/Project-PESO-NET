@@ -1,9 +1,10 @@
+import axios from "axios";
+
+import { useEffect, useState } from "react";
 import { Grid, Typography } from "@mui/material";
+
 import SideNav from "../common/side_nav";
 import JobTemp from "../common/job_template";
-import { useEffect, useState } from "react";
-
-import axios from "axios";
 
 function Home() {
   const [jobData, setJobData] = useState();
@@ -25,7 +26,7 @@ function Home() {
 
   return (
     <>
-      <Grid item md={3}>
+      <Grid item md={3} sm={12}>
         <SideNav type="home" />
       </Grid>
       <Grid item md={9}>

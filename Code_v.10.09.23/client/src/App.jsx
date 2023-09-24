@@ -18,6 +18,7 @@ import Status from "./components/status/Status";
 import PrivateRoutes from "./utils/route_guard";
 import { useContext } from "react";
 import AuthContext from "./context/AuthContext";
+import CreateProfile from "./components/profile/CreateProfile";
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             </Route>
             <Route path="notifications" element={<Notifications />} />
             <Route path="profile" element={<Profile />} />
+            <Route path="manage-profile" element={<CreateProfile />} />
             <Route path="resume" element={<Resume />} />
             <Route path="saved" element={<Saved />} />
             <Route path="status" element={<Status />} />

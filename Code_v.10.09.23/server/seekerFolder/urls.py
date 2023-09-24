@@ -12,7 +12,7 @@ urlpatterns = [
 
     path('create-resume/<int:pk>', ResumePut.as_view()),
     path('create-profile/<int:account>', ProfilePut.as_view()),
-    path('create-engagement/<int:pk>', EngagementPut.as_view()),
+    path('create-engagement/<int:custom_key>', EngagementPut.as_view()),
     path('create-comment/<int:pk>', CommentPut.as_view()),
 
     # path('get-all', views.get_all_posts, name='get-all'),

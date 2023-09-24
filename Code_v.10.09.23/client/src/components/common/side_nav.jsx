@@ -16,16 +16,21 @@ import axios from "axios";
 
 function SideNav({ type }) {
   const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     const { user_id } = jwt_decode(localStorage.getItem("token"));
 
     const get_user_profile = async () => {
-      const response = await axios.get(
-        `http://127.0.0.1:8001/seeker/create-profile/${user_id}`
-      );
+      try {
+        const response = await axios.get(
+          `http://127.0.0.1:8001/seeker/create-profile/${user_id}`
+        );
 
-      console.log(response.data);
+        setProfile(response.data);
+      } catch (error) {
+        setProfile(null);
+      }
     };
 
     get_user_profile();
@@ -90,12 +95,27 @@ function SideNav({ type }) {
           <SetAvatar />
           <SetTitle
             name={
-              <Typography fontSize={18} fontWeight={500}>
-                ARVIN MALALUAN
-              </Typography>
+              !profile ? (
+                "(name unset)"
+              ) : (
+                <Typography
+                  fontSize={18}
+                  fontWeight={500}
+                  sx={{ textTransform: "uppercase" }}
+                >
+                  {profile.name}
+                </Typography>
+              )
             }
           />
-          <SetSubHeader message="Success is not determined by how fast you achieved something, it is ..." />
+          <SetSubHeader
+            message={
+              !profile
+                ? "(bio unset)"
+                : profile.bio.slice(0, 100) +
+                  (profile.bio.length > 100 ? "..." : "")
+            }
+          />
         </Stack>
         <Divider />
         <CardActions>

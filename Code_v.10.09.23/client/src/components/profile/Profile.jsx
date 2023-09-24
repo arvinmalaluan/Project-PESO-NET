@@ -2,16 +2,34 @@ import { Grid, Stack } from "@mui/material";
 import Header from "./profile_header";
 import LeftTemp from "./left_template";
 import CreatePost from "../common/create_post";
-import CommPostTemplate from "../community/community_post";
+import { useEffect, useState } from "react";
+import { get_profile } from "../../context/GetUserData";
+
+import jwtDecode from "jwt-decode";
 
 function Profile() {
+  const [details, setDetails] = useState();
+
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+
+  useEffect(() => {
+    get_profile(user_id)
+      .then((data) => {
+        setDetails(data);
+      })
+      .catch((error) => {
+        console.log("Error encountered", error);
+        setDetails(null);
+      });
+  }, []);
+
   return (
     <>
-      <Grid item md={12}>
-        <Header />
+      <Grid item sm={12}>
+        <Header details={details} />
       </Grid>
 
-      <Grid item md={5}>
+      <Grid item md={5} sm={12}>
         <Stack>
           <LeftTemp title="Photos" type="photos" />
         </Stack>
@@ -20,9 +38,9 @@ function Profile() {
           <LeftTemp title="Following" type="following" />
         </Stack>
       </Grid>
-      <Grid item md={7}>
+
+      <Grid item md={7} sm={12}>
         <CreatePost />
-        <CommPostTemplate />
       </Grid>
     </>
   );

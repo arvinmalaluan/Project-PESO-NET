@@ -7,23 +7,7 @@ from userFolder.models import Account
 class Post(models.Model):
     poster = models.ForeignKey(Account, on_delete=models.CASCADE)
     image = models.ImageField(null=True)
-    title = models.CharField(max_length=100, null=True)
     description = models.TextField()
-    created = models.DateTimeField(auto_now_add=True)
-
-
-class Comments(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    content = models.TextField(max_length=500)
-    created = models.DateTimeField(auto_now_add=True)
-
-
-class Engagement(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
-    is_liked = models.BooleanField(default=False)
-    is_disliked = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
 
 
@@ -69,3 +53,30 @@ class Profile(models.Model):
     location = models.CharField(max_length=255, null=True)
     portfolio_link = models.CharField(max_length=255, null=True)
     educational_attainment = models.CharField(max_length=255, null=True)
+
+
+class Comments(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    content = models.TextField(max_length=500)
+    created = models.DateTimeField(auto_now_add=True)
+    commentor = models.CharField(max_length=100, blank=True)
+    photo = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.commentor = self.profile.name
+        self.photo = self.profile.photo
+        super().save(*args, **kwargs)
+
+
+class Engagement(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    is_liked = models.BooleanField(default=False)
+    is_disliked = models.BooleanField(default=False)
+    created = models.DateTimeField(auto_now_add=True)
+    custom_key = models.CharField(max_length=30, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.custom_key = f'{self.post.id}{self.account.id}'
+        super().save(*args, **kwargs)

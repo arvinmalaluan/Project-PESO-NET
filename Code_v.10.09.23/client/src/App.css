@@ -2,3 +2,26 @@
   height: 100px;
   width: 100px;
 }
+
+.post-img-label {
+  cursor: pointer;
+  height: 100%;
+  width: 100%;
+  border-radius: 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-img-label:hover {
+  background-color: whitesmoke;
+}
+
+.selected-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+}

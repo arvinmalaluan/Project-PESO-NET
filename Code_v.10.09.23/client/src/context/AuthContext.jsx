@@ -18,8 +18,6 @@ export const AuthProvider = ({ children }) => {
       : null
   );
 
-  console.log(user);
-
   const login_user = async (formData) => {
     try {
       const response = await axios.post(
@@ -33,6 +31,8 @@ export const AuthProvider = ({ children }) => {
         setUser(jwt_decode(data));
 
         localStorage.setItem("token", data);
+
+        console.log(data);
 
         location.reload();
       }

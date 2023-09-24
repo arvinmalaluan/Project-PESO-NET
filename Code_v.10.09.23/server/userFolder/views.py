@@ -27,6 +27,8 @@ def login(request):
     
     # validate whether the raw password or the password input is the same with the hashed password or the saved password
     does_match = check_password(request.data['password'], user.password)
+    print(does_match)
+    
     if does_match:
         user = Account.objects.get(Q(email = request.data['identifier']) | Q(username = request.data['identifier']))
         
@@ -41,8 +43,6 @@ def login(request):
         secret_key = secrets.token_hex(32)
         token = jwt.encode(payload, secret_key)
 
-        print(token)
-        
         return Response({'success': 1, "token": token })
     
     return Response({'success': 0, 'message': 'invalid log in credential'})
@@ -82,9 +82,9 @@ def update_user_info(request):
 
         if serializer.is_valid():
             serializer.save()
-            return Response({"success": 1})
+            return Response({"success": 1, "data": serializer.data})
         
-        return Response({'success': serializer.errors})
+        return Response({'failed': serializer.errors})
     
     except Account.DoesNotExist:
         return Response({'success': 0, 'message': 'not found'})

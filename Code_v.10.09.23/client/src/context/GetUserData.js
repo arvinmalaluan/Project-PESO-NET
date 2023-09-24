@@ -1,26 +1,34 @@
 import axios from "axios";
-import jwt_decode from "jwt-decode";
+import { useState } from "react";
 
-const { user_id } = jwt_decode(localStorage.getItem("authTokens"));
+const seeker_url = "http://127.0.0.1:8001/seeker";
 
-const getUserAccount = async (id) => {
-  const data = { id: id };
+export const get_profile = async (user_id) => {
+  const response = await axios.get(seeker_url + "/create-profile/" + user_id);
+  return response.data;
+};
+
+export const get_post = async () => {
+  const response = await axios.get(seeker_url + "/create-post");
+  return response.data;
+};
+
+export const get_post_details = async (post_id) => {
+  const response = await axios.get(seeker_url + "/create-post/" + post_id);
+  return response.data;
+};
+
+export const update_engagement = async (data) => {
+  let response;
+
   try {
-    const endpoint = "http://127.0.0.1:8001/general/info";
-    const response = await axios.post(endpoint, data);
-
-    console.log(response.data.data);
-  } catch (error) {
-    console.log(error);
+    response = await axios.put(
+      seeker_url + "/create-engagement/" + data.custom_key,
+      data
+    );
+  } catch {
+    response = await axios.post(seeker_url + "/create-engagement", data);
   }
+
+  return response;
 };
-
-const GetUserData = () => {
-  const data = {
-    getUserAccount: getUserAccount(user_id),
-  };
-
-  return data;
-};
-
-export default GetUserData;

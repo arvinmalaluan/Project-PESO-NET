@@ -52,6 +52,10 @@ class EngagementPut(generics.RetrieveUpdateDestroyAPIView):
     queryset = Engagement.objects.all()
     serializer_class = EngagementSerializer
 
+    def get_object(self):
+        custom_key = self.kwargs['custom_key']
+        return get_object_or_404(Engagement, custom_key=custom_key)
+
 
 class PostDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Post.objects.all()

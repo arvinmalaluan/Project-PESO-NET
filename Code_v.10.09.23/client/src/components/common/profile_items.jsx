@@ -9,12 +9,28 @@ import {
 
 import up_acc from "./../../assets/upgrade_account.svg";
 import { useNavigate } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../../context/AuthContext";
+import { get_profile } from "../../context/GetUserData";
+
+import jwtDecode from "jwt-decode";
 
 function ProfTemp({ setAnchor }) {
   const navigate = useNavigate();
   const { logout_user } = useContext(AuthContext);
+  const [name, setName] = useState("(unset)");
+
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+
+  useEffect(() => {
+    get_profile(user_id)
+      .then((data) => {
+        setName(data.name);
+      })
+      .catch((error) => {
+        console.log("Error encountered", error);
+      });
+  }, []);
 
   const ProfItem = ({ name, path }) => {
     return (
@@ -47,13 +63,17 @@ function ProfTemp({ setAnchor }) {
         >
           <Avatar />
           <Stack ml={2}>
-            <Typography
-              fontSize={16}
-              fontWeight={500}
-              sx={{ textTransform: "uppercase" }}
-            >
-              Arvin Malaluan
-            </Typography>
+            {name ? (
+              <Typography
+                fontSize={16}
+                fontWeight={500}
+                sx={{ textTransform: "uppercase" }}
+              >
+                {name}
+              </Typography>
+            ) : (
+              "unset"
+            )}
             <Typography fontSize={12}>Navigate to profile</Typography>
           </Stack>
         </MenuItem>
