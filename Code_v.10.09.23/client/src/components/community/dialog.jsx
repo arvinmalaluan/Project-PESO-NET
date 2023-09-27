@@ -14,19 +14,50 @@ import {
 import { forwardRef, useState } from "react";
 
 import ImageIcon from "./../../assets/icons/image.svg";
-import CrossIcon from "./../../assets/icons/cross-circled.svg";
+import remove_icon from "./../../assets/icons/cross-2.svg";
+import { create_post } from "../../context/GetUserData";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({ open, set }) {
+export default function AlertDialogSlide({ open, set, details, user_id }) {
   const [image, setImage] = useState(null);
   const [fileName, setFileName] = useState("No file selected");
-  const [formData, setFormData] = useState(null);
+  const [formData, setFormData] = useState({
+    poster: "",
+    image: "",
+    description: "",
+  });
 
   const handleClose = () => {
     set(false);
+  };
+
+  const handleInputChange = (event) => {
+    const input_value = event.target.value;
+
+    setFormData({
+      poster: user_id,
+      image: null,
+      description: input_value,
+    });
+  };
+
+  const handlePost = () => {
+    create_post(formData)
+      .then((data) => {
+        setFormData({
+          poster: "",
+          image: "",
+          description: "",
+        });
+
+        set(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -52,7 +83,7 @@ export default function AlertDialogSlide({ open, set }) {
           <Avatar />
           <Stack>
             <Typography fontSize={16} fontWeight={500}>
-              Arvin Malaluan
+              {details.name ? details.name : "loading ..."}
             </Typography>
             <Typography fontSize={12}>Public</Typography>
           </Stack>
@@ -69,6 +100,7 @@ export default function AlertDialogSlide({ open, set }) {
         >
           <TextField
             placeholder="What is on your mind?"
+            value={formData.description}
             multiline
             fullWidth
             sx={{
@@ -83,6 +115,7 @@ export default function AlertDialogSlide({ open, set }) {
                 padding: 0,
               },
             }}
+            onChange={handleInputChange}
           />
 
           <Stack
@@ -132,17 +165,23 @@ export default function AlertDialogSlide({ open, set }) {
             ) : (
               <>
                 <IconButton
+                  size="small"
                   sx={{
                     position: "absolute",
-                    right: 5,
-                    top: 5,
+                    right: 8,
+                    top: 8,
+                    bgcolor: "white",
+                    boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+                    "&:hover": {
+                      bgcolor: "whitesmoke",
+                    },
                   }}
                   onClick={() => {
                     setFileName("No file selected");
                     setImage(null);
                   }}
                 >
-                  <img src={CrossIcon} height={20} alt="" />
+                  <img src={remove_icon} height={16} alt="" />
                 </IconButton>
                 <img
                   src={image}
@@ -155,11 +194,11 @@ export default function AlertDialogSlide({ open, set }) {
         </DialogContent>
         <DialogActions sx={{ paddingInline: 2, paddingBlock: 2 }}>
           <Button
-            onClick={handleClose}
+            onClick={handlePost}
             variant="contained"
             disableElevation
             fullWidth
-            disabled={!Boolean(formData)}
+            disabled={!Boolean(formData.description)}
           >
             Post
           </Button>

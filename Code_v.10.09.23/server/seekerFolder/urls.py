@@ -10,7 +10,7 @@ urlpatterns = [
     path('create-resume', ResumePost.as_view()),
     path('create-profile', ProfilePost.as_view()),
 
-    path('create-resume/<int:pk>', ResumePut.as_view()),
+    path('create-resume/<int:account>', ResumePut.as_view()),
     path('create-profile/<int:account>', ProfilePut.as_view()),
     path('create-engagement/<int:custom_key>', EngagementPut.as_view()),
     path('create-comment/<int:pk>', CommentPut.as_view()),

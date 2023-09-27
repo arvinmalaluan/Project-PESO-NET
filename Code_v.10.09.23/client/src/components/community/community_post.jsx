@@ -45,6 +45,7 @@ function CommPostTemplate({ details }) {
   });
 
   const [posterDetails, setPosterDetails] = useState({
+    id: "",
     profile: "",
     name: "",
   });
@@ -55,6 +56,7 @@ function CommPostTemplate({ details }) {
     get_profile(poster)
       .then((data) => {
         setPosterDetails({
+          id: data.id,
           name: data.name,
           profile: data.photo,
         });
@@ -223,6 +225,13 @@ function CommPostTemplate({ details }) {
         set={setOpen}
         post={postDetails}
         poster={posterDetails}
+        user_id={user_id}
+        handleLike={handleLike}
+        handleDislike={handleDislike}
+        liked={liked}
+        disliked={disliked}
+        trigger={trigger}
+        setTrigger={setTrigger}
       />
     </>
   );

@@ -26,8 +26,11 @@ class ProfilePost(generics.ListCreateAPIView):
 
 
 class ResumePut(generics.RetrieveUpdateAPIView):
-    queryset = Resume.objects.all()
     serializer_class = ResumeSerializer
+
+    def get_object(self):
+        account = self.kwargs['account']
+        return get_object_or_404(Resume, account=account)
 
 
 class ProfilePut(generics.RetrieveUpdateAPIView):

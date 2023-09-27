@@ -32,3 +32,44 @@ export const update_engagement = async (data) => {
 
   return response;
 };
+
+export const post_comment = async (data) => {
+  try {
+    const response = await axios.post(seeker_url + "/create-comment", data);
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const create_post = async (data) => {
+  let response;
+
+  try {
+    response = await axios.post(seeker_url + "/create-post", data);
+  } catch (error) {
+    response = error;
+  }
+
+  return response;
+};
+
+export const upd_crt_resume = async (data) => {
+  let response;
+
+  try {
+    response = await axios.put(
+      seeker_url + "/create-resume/" + data.account,
+      data
+    );
+  } catch {
+    response = await axios.post(seeker_url + "/create-resume", data);
+  }
+
+  return response;
+};
+
+export const get_resume = async (user_id) => {
+  const response = await axios.get(seeker_url + "/create-resume/" + user_id);
+  return response.data;
+};

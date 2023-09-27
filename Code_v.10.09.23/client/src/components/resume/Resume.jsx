@@ -1,12 +1,66 @@
 import { Button, Grid, Link, Stack, Typography } from "@mui/material";
 import StepTemp from "./stepper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Personal from "./personal";
 import WorkRelated from "./work_related";
 import Reference from "./reference";
+import jwtDecode from "jwt-decode";
+import { get_resume, upd_crt_resume } from "../../context/GetUserData";
 
 function Resume() {
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+
   const [step, setStep] = useState(0);
+  const [resumeDetails, setResumeDetails] = useState({
+    fullname: "",
+    phone_number: "",
+    email_address: "",
+    resume_objective: "",
+    education_level: "",
+    name_of_institution: "",
+    year_graduated: "",
+    achievements: "",
+    languages: "",
+    hobbies_interest: "",
+    skill: "",
+    proficiency: "",
+    reward_name: "",
+    year_received: "",
+    issuer: "",
+    reward_description: "",
+    project_name: "",
+    published_year: "",
+    project_description: "",
+    reference_full_name: "",
+    relationship_to_you: "",
+    institution: "",
+    contact_information: "",
+    account: user_id,
+  });
+
+  useEffect(() => {
+    step === 3 &&
+      upd_crt_resume(resumeDetails)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+    step === 3 && console.log(resumeDetails);
+  }, [step]);
+
+  useEffect(() => {
+    resumeDetails.account &&
+      get_resume(user_id)
+        .then((data) => {
+          setResumeDetails(data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, []);
 
   return (
     <>
@@ -16,6 +70,11 @@ function Resume() {
             border: "1px solid rgba(0, 0, 0, 0.12)",
             height: "83vh",
             padding: 2,
+
+            display: {
+              sm: "none",
+              md: "block",
+            },
           }}
         >
           <Typography fontSize={18} fontWeight={500}>
@@ -23,7 +82,7 @@ function Resume() {
           </Typography>
         </Stack>
       </Grid>
-      <Grid item md={7}>
+      <Grid item md={7} sm={12}>
         <Stack
           sx={{
             border: "1px solid rgba(0, 0, 0, 0.12)",
@@ -42,9 +101,15 @@ function Resume() {
               overflowY: "scroll",
             }}
           >
-            {step === 0 && <Personal />}
-            {step === 1 && <WorkRelated />}
-            {step === 2 && <Reference />}
+            {step === 0 && (
+              <Personal details={resumeDetails} set={setResumeDetails} />
+            )}
+            {step === 1 && (
+              <WorkRelated details={resumeDetails} set={setResumeDetails} />
+            )}
+            {step === 2 && (
+              <Reference details={resumeDetails} set={setResumeDetails} />
+            )}
             {step === 3 && (
               <Stack
                 width="100%"

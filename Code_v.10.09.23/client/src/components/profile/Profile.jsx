@@ -3,12 +3,14 @@ import Header from "./profile_header";
 import LeftTemp from "./left_template";
 import CreatePost from "../common/create_post";
 import { useEffect, useState } from "react";
-import { get_profile } from "../../context/GetUserData";
+import { get_post, get_profile } from "../../context/GetUserData";
 
 import jwtDecode from "jwt-decode";
+import CommPostTemplate from "../community/community_post";
 
 function Profile() {
   const [details, setDetails] = useState();
+  const [posts, setPosts] = useState(null);
 
   const { user_id } = jwtDecode(localStorage.getItem("token"));
 
@@ -20,6 +22,18 @@ function Profile() {
       .catch((error) => {
         console.log("Error encountered", error);
         setDetails(null);
+      });
+
+    get_post()
+      .then((data) => {
+        // for (const item of data) {
+        //   console.log(item.poster);
+        // }
+
+        setPosts(data);
+      })
+      .catch((error) => {
+        console.log(error);
       });
   }, []);
 
@@ -41,6 +55,17 @@ function Profile() {
 
       <Grid item md={7} sm={12}>
         <CreatePost />
+
+        {posts &&
+          posts.map((post) => {
+            return (
+              post.poster === user_id && (
+                <Stack key={post.id} mb={2}>
+                  <CommPostTemplate details={post} />
+                </Stack>
+              )
+            );
+          })}
       </Grid>
     </>
   );

@@ -1,13 +1,37 @@
-import { Avatar, Stack, TextField } from "@mui/material";
+import { Avatar, Stack, TextField, Typography } from "@mui/material";
 import AlertDialogSlide from "../community/dialog";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import jwtDecode from "jwt-decode";
+import { get_profile } from "../../context/GetUserData";
 
 function CreatePost() {
   const [open, setOpen] = useState(false);
+  const [profileDetails, setProfileDetails] = useState({
+    id: "",
+    name: "",
+    profile: "",
+  });
+
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
 
   const handleClickOpen = () => {
     setOpen(true);
   };
+
+  useEffect(() => {
+    get_profile(user_id)
+      .then((data) => {
+        setProfileDetails({
+          id: data.id,
+          name: data.name,
+          profile: data.photo,
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   return (
     <>
@@ -20,7 +44,7 @@ function CreatePost() {
       >
         <Avatar />
         <TextField
-          placeholder="What is on your mind, Arvin?"
+          placeholder={"What is on your mind, " + profileDetails.name + "?"}
           size="small"
           fullWidth
           onClick={handleClickOpen}
@@ -31,7 +55,12 @@ function CreatePost() {
         />
       </Stack>
 
-      <AlertDialogSlide open={open} set={setOpen} />
+      <AlertDialogSlide
+        open={open}
+        set={setOpen}
+        details={profileDetails}
+        user_id={user_id}
+      />
     </>
   );
 }

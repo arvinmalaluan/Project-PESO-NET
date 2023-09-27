@@ -18,8 +18,23 @@ import {
 
 import send from "./../../assets/icons/send.svg";
 
-const OpenPost = ({ open, set, post, poster }) => {
-  const { name, profile } = poster;
+import { useEffect, useState } from "react";
+import { post_comment } from "../../context/GetUserData";
+
+const OpenPost = ({
+  open,
+  set,
+  post,
+  poster,
+  user_id,
+  handleLike,
+  handleDislike,
+  liked,
+  disliked,
+  trigger,
+  setTrigger,
+}) => {
+  const { id, name, profile } = poster;
   const {
     post_id,
     created,
@@ -30,9 +45,46 @@ const OpenPost = ({ open, set, post, poster }) => {
     comments,
   } = post;
 
+  const [formData, setFormData] = useState({
+    content: "",
+    post: "",
+    profile: "",
+    account: "",
+  });
+
   const handleclose = () => {
     set(false);
   };
+
+  const handleCommentChange = (event) => {
+    const content_value = event.target.value;
+
+    setFormData({
+      content: content_value,
+      post: post_id,
+      profile: id,
+      account: user_id,
+    });
+  };
+
+  const handleComment = () => {
+    post_comment(formData)
+      .then((data) => {
+        setFormData({
+          content: "",
+          post: "",
+          profile: "",
+          account: "",
+        });
+
+        setTrigger(!trigger);
+      })
+      .catch((error) => {
+        console.log("unsuccessful", error);
+      });
+  };
+
+  useEffect(() => {}, [comments]);
 
   return (
     <>
@@ -46,7 +98,7 @@ const OpenPost = ({ open, set, post, poster }) => {
             flexDirection: "column",
           }}
         >
-          <Stack sx={{ height: "95%" }}>
+          <Stack sx={{ height: "90%" }}>
             <CardHeader
               title={
                 <Typography textAlign="center" fontSize={18} fontWeight={500}>
@@ -63,6 +115,7 @@ const OpenPost = ({ open, set, post, poster }) => {
               sx={{
                 overflowY: "scroll",
                 height: "95%",
+                paddingInline: 3,
               }}
             >
               <Stack direction="row" spacing={2}>
@@ -83,6 +136,21 @@ const OpenPost = ({ open, set, post, poster }) => {
 
               <Stack
                 mt={2}
+                pb={0.5}
+                direction="row"
+                justifyContent="space-between"
+              >
+                <Typography fontSize={12}>
+                  upvote: {upvote}, downvote: {downvote}
+                </Typography>
+
+                <Typography fontSize={12}>
+                  {comments.length}{" "}
+                  {comments.length > 1 ? "comments" : "comment"}
+                </Typography>
+              </Stack>
+
+              <Stack
                 direction="row"
                 sx={{
                   padding: "8px 16px",
@@ -92,16 +160,24 @@ const OpenPost = ({ open, set, post, poster }) => {
                 <Stack direction="row" flexGrow={1}>
                   <FormControlLabel
                     label="Upvote"
-                    control={<Checkbox size="small" />}
-                    // checked={liked} onClick={handleLike}
+                    control={
+                      <Checkbox
+                        size="small"
+                        checked={liked}
+                        onClick={handleLike}
+                      />
+                    }
                     sx={{ userSelect: "none" }}
                   />
 
                   <FormControlLabel
                     label="Downvote"
                     control={
-                      <Checkbox size="small" />
-                      // checked={disliked} onClick={handleDislike}
+                      <Checkbox
+                        size="small"
+                        checked={disliked}
+                        onClick={handleDislike}
+                      />
                     }
                     sx={{ userSelect: "none", ml: 1 }}
                   />
@@ -117,93 +193,112 @@ const OpenPost = ({ open, set, post, poster }) => {
                 </Button>
               </Stack>
 
-              <Stack direction="row" spacing={2} alignItems="start" mt={2}>
-                <Avatar
-                  sx={{
-                    height: "32px",
-                    width: "32px",
-                  }}
-                />
-                <Stack>
-                  <Chip
-                    label={
-                      <>
-                        <Typography fontSize={12} fontWeight={500}>
-                          Arvin Malaluan
-                        </Typography>
-                        <Typography fontSize={14} whiteSpace="break-spaces">
-                          Lorem ipsum dolor sit, amet consectetur adipisicing
-                          elit. Enim incidunt odit distinctio vitae molestiae
-                          tenetur eligendi maxime voluptate minus excepturi a
-                          iure similique saepe molestias ipsa atque, natus
-                          perferendis! Ipsa.
-                          {comments && console.log(post, poster)}
-                        </Typography>
-                      </>
-                    }
-                    sx={{
-                      height: "auto",
-                      paddingBlock: 1,
-                      paddingInline: 1,
-                      borderRadius: "20px",
-                      bgcolor: "whitesmoke",
-                    }}
-                  />
+              {comments &&
+                comments.map((comment) => {
+                  return (
+                    <Stack
+                      key={comment.id}
+                      direction="row"
+                      spacing={1}
+                      alignItems="start"
+                      mt={2}
+                    >
+                      <Avatar
+                        sx={{
+                          height: "32px",
+                          width: "32px",
+                        }}
+                      />
+                      <Stack>
+                        <Chip
+                          label={
+                            <>
+                              <Typography fontSize={12} fontWeight={500}>
+                                {comment.account === user_id
+                                  ? "You"
+                                  : comment.commentor}
+                              </Typography>
+                              <Typography
+                                fontSize={14}
+                                whiteSpace="break-spaces"
+                              >
+                                {comment.content}
+                              </Typography>
+                            </>
+                          }
+                          sx={{
+                            justifyContent: "start",
+                            height: "auto",
+                            paddingBlock: 1,
+                            paddingInline: 1,
+                            borderRadius: "20px",
+                            bgcolor: "whitesmoke",
+                          }}
+                        />
 
-                  <Stack direction="row" spacing={2} mt={0.5} ml="20px">
-                    <Typography fontSize={12} fontWeight={500}>
-                      Like
-                    </Typography>
-                    <Typography fontSize={12} fontWeight={500}>
-                      Reply
-                    </Typography>
-                    <Typography fontSize={12}>3h</Typography>
-                  </Stack>
-                </Stack>
-              </Stack>
+                        <Stack direction="row" spacing={2} mt={0.5} ml="20px">
+                          <Typography fontSize={12} fontWeight={500}>
+                            Like
+                          </Typography>
+                          <Typography fontSize={12} fontWeight={500}>
+                            Reply
+                          </Typography>
+                          <Typography fontSize={12}>3h</Typography>
+                        </Stack>
+                      </Stack>
+                    </Stack>
+                  );
+                })}
             </CardContent>
           </Stack>
 
-          <Stack>
-            <CardActions
+          <CardActions
+            sx={{
+              paddingBlock: "16px",
+              borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+              height: "5%",
+            }}
+          >
+            <Stack
+              direction="row"
+              alignItems="start"
+              spacing={2}
+              width="100%"
               sx={{
-                paddingBlock: "16px",
-                borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-                height: "5%",
+                paddingInline: 2,
               }}
             >
-              <Stack
-                direction="row"
-                alignItems="start"
-                spacing={2}
-                width="100%"
-                sx={{
-                  paddingInline: 2,
+              <Avatar sx={{ width: 32, height: 32 }} />
+              <TextField
+                fullWidth
+                placeholder="Write a comment"
+                size="small"
+                value={formData.content}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        sx={{
+                          padding: "5px",
+                          display: formData.content ? "" : "none",
+                        }}
+                        onClick={handleComment}
+                      >
+                        <img src={send} height={20} alt="" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
                 }}
-              >
-                <Avatar sx={{ width: 32, height: 32 }} />
-                <TextField
-                  fullWidth
-                  placeholder="Write a comment"
-                  size="small"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton size="small" sx={{ padding: "5px" }}>
-                          <img src={send} height={20} alt="" />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  sx={{
-                    "& .MuiOutlinedInput-root": {
-                      paddingRight: 1,
-                    },
-                  }}
-                />
-              </Stack>
-            </CardActions>
-          </Stack>
+                onChange={handleCommentChange}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    paddingRight: 1,
+                  },
+                }}
+              />
+            </Stack>
+          </CardActions>
         </Card>
       </Dialog>
     </>

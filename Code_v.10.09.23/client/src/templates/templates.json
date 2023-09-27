@@ -1,0 +1,58 @@
+{
+  "contact_data": [
+    { "name": "fullname", "placeholder": "Full name" },
+    {
+      "name": "phone_number",
+      "placeholder": "Phone number"
+    },
+    {
+      "name": "email_address",
+      "placeholder": "Email address"
+    },
+    {
+      "name": "resume_objective",
+      "placeholder": "Resume objective"
+    }
+  ],
+
+  "education_data": [
+    { "name": "education_level", "placeholder": "Education Level" },
+    { "name": "name_of_institution", "placeholder": "Name of Institution" },
+    { "name": "year_graduated", "placeholder": "Year Graduated" },
+    { "name": "achievements", "placeholder": "Achievements" }
+  ],
+
+  "language_data": [{ "name": "languages", "placeholder": "Language" }],
+
+  "hobbies_interest_data": [
+    { "name": "hobbies_interest", "placeholder": "Hobbies and Interest" }
+  ],
+
+  "skills_data": [
+    { "placeholder": "Skill", "name": "skill" },
+    { "placeholder": "Proficiency", "name": "proficiency" }
+  ],
+
+  "achievements_data": [
+    { "placeholder": "Reward name", "name": "reward_name" },
+    { "placeholder": "Year recieved", "name": "year_received" },
+    { "placeholder": "Issuer/Organization", "name": "issuer" },
+    { "placeholder": "Description (Optional)", "name": "reward_description" }
+  ],
+
+  "project_data": [
+    { "placeholder": "Project name", "name": "project_name" },
+    {
+      "placeholder": "Published Year/Year Developed",
+      "name": "published_year"
+    },
+    { "placeholder": "Description (Optional)", "name": "project_description" }
+  ],
+
+  "reference_data": [
+    { "placeholder": "Full name", "name": "reference_full_name" },
+    { "placeholder": "Relationship to you?", "name": "relationship_to_you" },
+    { "placeholder": "Institution", "name": "institution" },
+    { "placeholder": "Contact Information", "name": "contact_information" }
+  ]
+}
