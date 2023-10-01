@@ -16,9 +16,8 @@ import Resume from "./components/resume/Resume";
 import Saved from "./components/saved/Saved";
 import Status from "./components/status/Status";
 import PrivateRoutes from "./utils/route_guard";
-import { useContext } from "react";
-import AuthContext from "./context/AuthContext";
 import CreateProfile from "./components/profile/CreateProfile";
+import TrySocket from "./components/TrySocket";
 
 function App() {
   return (
@@ -33,6 +32,7 @@ function App() {
           )}
           <Route path="register" element={<Signup />} />
           <Route path="*" element={<Login />} />
+          <Route path="try-socket" element={<TrySocket />} />
 
           <Route element={<PrivateRoutes />}>
             <Route path="jobs" element={<Jobs />}>

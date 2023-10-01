@@ -48,3 +48,83 @@ function Login() {
 }
 
 export default Login;
+
+
+import { Button, Grid, Stack, TextField, Typography } from "@mui/material";
+import jwtDecode from "jwt-decode";
+
+import { useEffect, useState } from "react";
+
+const TrySocket = () => {
+  const [data, setData] = useState([""]);
+  const [message, setMessage] = useState("");
+
+  const socket = new WebSocket(`ws://localhost:8000/getnumber/1`);
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+
+  socket.onopen = function (event) {
+    console.log("WebSocket is open now.");
+    console.log(user_id);
+  };
+
+  socket.onmessage = function (event) {
+    const get_data = JSON.parse(event.data);
+    setData([...data, get_data.text]);
+  };
+
+  socket.onclose = function (event) {
+    console.log("Server closed unexpectedly");
+  };
+
+  const handleMessageSend = () => {
+    // Send a message to the server
+    if (socket.readyState === WebSocket.OPEN) {
+      try {
+        socket.send(JSON.stringify({ message: message }));
+      } catch (error) {
+        console.log(error);
+      }
+      setMessage("");
+    } else {
+      console.log("WebSocket is not open yet. Please wait for the connection.");
+    }
+
+    setMessage("");
+  };
+
+  return (
+    <>
+      <Grid item md={12}>
+        <Stack spacing={2} justifyContent="center" direction="row">
+          <TextField
+            placeholder="Enter message"
+            size="small"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            disableElevation
+            onClick={handleMessageSend}
+          >
+            Send Message
+          </Button>
+        </Stack>
+
+        <Typography fontSize={18} fontWeight={500}>
+          Conversation
+        </Typography>
+
+        {data.map((item, idx) => {
+          return (
+            <Typography fontSize={14} key={idx}>
+              {item}
+            </Typography>
+          );
+        })}
+      </Grid>
+    </>
+  );
+};
+
+export default TrySocket;

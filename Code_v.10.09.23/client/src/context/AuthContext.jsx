@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
   const login_user = async (formData) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8001/general/login",
+        "http://127.0.0.1:8000/general/login",
         formData
       );
 

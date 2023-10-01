@@ -24,7 +24,7 @@ function SideNav({ type }) {
     const get_user_profile = async () => {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8001/seeker/create-profile/${user_id}`
+          `http://127.0.0.1:8000/seeker/create-profile/${user_id}`
         );
 
         setProfile(response.data);

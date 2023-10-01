@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const seeker_url = "http://127.0.0.1:8001/seeker";
+const seeker_url = "http://127.0.0.1:8000/seeker";
 
 export const get_profile = async (user_id) => {
   const response = await axios.get(seeker_url + "/create-profile/" + user_id);
@@ -71,5 +71,13 @@ export const upd_crt_resume = async (data) => {
 
 export const get_resume = async (user_id) => {
   const response = await axios.get(seeker_url + "/create-resume/" + user_id);
+  return response.data;
+};
+
+export const get_accounts = async () => {
+  const response = await axios.get(
+    "http://127.0.0.1:8000/seeker/create-profile"
+  );
+
   return response.data;
 };

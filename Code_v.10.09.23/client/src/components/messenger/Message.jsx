@@ -1,23 +1,30 @@
-import { Grid, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+
+import { Grid, IconButton, Stack, TextField, Typography } from "@mui/material";
+
 import MessTemp from "../common/message_template";
-import { useParams } from "react-router-dom";
 import MessDetail from "./message_details";
 
-function Message() {
-  const { message_id } = useParams();
+// import statements for icons
+import write_icon from "./../../assets/icons/pencil-2.svg";
+import CreateMessage from "./new_message";
 
-  //   alert(message_id);
+function Message() {
+  const [activeMessage, setActiveMessage] = useState("");
+
   return (
     <>
       <Grid item md={4}>
         <Grid container>
           <Grid item md={12}>
             <Stack spacing={1}>
-              <Stack pb={1}>
+              <Stack direction="row" justifyContent="space-between">
                 <Typography fontSize={16} fontWeight={500}>
                   Messages
                 </Typography>
+                <IconButton onClick={() => setActiveMessage(-1)}>
+                  <img src={write_icon} alt="write-message" />
+                </IconButton>
               </Stack>
               <TextField
                 placeholder="Search here ..."
@@ -26,13 +33,14 @@ function Message() {
                 inputProps={{ style: { fontSize: 14 } }}
                 InputLabelProps={{ style: { fontSize: 14 } }}
               />
-              <MessTemp />
+              <MessTemp set={setActiveMessage} id={1} active={activeMessage} />
+              <MessTemp set={setActiveMessage} id={2} active={activeMessage} />
             </Stack>
           </Grid>
         </Grid>
       </Grid>
       <Grid item md={8}>
-        {message_id == undefined ? (
+        {activeMessage === "" && (
           <>
             <Stack
               textAlign="center"
@@ -43,7 +51,6 @@ function Message() {
                 alignItems: "center",
                 border: "1px solid rgba(0, 0, 0, 0.12)",
               }}
-              fullWidth
             >
               <Typography width="70%" fontSize={16}>
                 Unlock Your Next Opportunity! Start a Conversation or Dive into
@@ -52,11 +59,11 @@ function Message() {
               </Typography>
             </Stack>
           </>
-        ) : (
-          <>
-            <MessDetail />
-          </>
         )}
+
+        {activeMessage !== -1 && activeMessage !== "" && <MessDetail />}
+
+        {activeMessage === -1 && <CreateMessage />}
       </Grid>
     </>
   );

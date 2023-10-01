@@ -13,7 +13,7 @@ function Home() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8001/jobrecru/jobpost"
+          "http://127.0.0.1:8000/jobrecru/jobpost"
         );
         setJobData(response.data);
       } catch (error) {

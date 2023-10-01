@@ -15,7 +15,7 @@ import {
 function MessDetail() {
   return (
     <>
-      <Card>
+      <Card elevation={0} sx={{ border: "1px solid rgba(0, 0, 0, 0.12)" }}>
         <Grid container height="calc(100vh - 85px)">
           <Grid
             item
@@ -86,7 +86,17 @@ function MessDetail() {
               </CardActions>
             </Stack>
           </Grid>
-          <Grid item md={4} height="100%">
+          <Grid
+            item
+            md={4}
+            height="100%"
+            sx={{
+              display: {
+                sm: "none",
+                md: "block",
+              },
+            }}
+          >
             <Stack
               height="30%"
               textAlign="center"
