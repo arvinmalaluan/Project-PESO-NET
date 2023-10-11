@@ -5,6 +5,8 @@
 
 body {
   overflow-y: scroll;
+  margin: 0;
+  padding: 0;
 }
 
 /* Add this CSS to change the width of the scrollbar */

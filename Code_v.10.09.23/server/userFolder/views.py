@@ -7,6 +7,7 @@ import secrets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework import generics
 
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
@@ -69,6 +70,11 @@ def get_user_info(request):
     return Response({'data': serializer.data})
 
 
+class getAccount(generics.RetrieveUpdateAPIView):
+    queryset = Account.objects.all()
+    serializer_class = UserAccountSerializer
+
+
 @api_view(['GET'])
 def get_all_info(request):
     account = Account.objects.all()
@@ -79,15 +85,15 @@ def get_all_info(request):
 
 @api_view(['PUT'])
 def update_user_info(request):
+    user = get_object_or_404(Account, id=request.data['account'])
+    does_match = check_password(request.data['old_password'], user.password)
+
     try:
 
-        if 'id' in request.data:
-            account = Account.objects.get(id=request.data['id'])
-        elif 'email' in request.data:
-            account = Account.objects.get(email=request.data['email'])
-        else:
-            return Response({'success': 0, 'message': 'Email cannot be null'})
+        if not does_match:
+            return Response({'failed': 'password does not match'})
 
+        account = Account.objects.get(id=request.data['account'])
         serializer = UserAccountSerializer(account, data=request.data)
 
         if serializer.is_valid():

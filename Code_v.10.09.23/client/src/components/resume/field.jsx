@@ -1,4 +1,4 @@
-import { IconButton, Stack, TextField, Typography } from "@mui/material";
+import { IconButton, Stack, TextField } from "@mui/material";
 import deleteIcon from "../../assets/icons/delete-icon.svg";
 
 const FieldTemplate = (props) => {

@@ -2,12 +2,15 @@ import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 import { createContext, useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
 
 export default AuthContext;
 
 export const AuthProvider = ({ children }) => {
+  const navigate = useNavigate();
+
   const [token, setToken] = useState(
     localStorage.getItem("token") ? localStorage.getItem("token") : null
   );
@@ -43,6 +46,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout_user = () => {
     localStorage.clear();
+    navigate("/");
     location.reload();
   };
 

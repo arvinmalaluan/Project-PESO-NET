@@ -56,6 +56,7 @@ function Login() {
               setFormData={setFormData}
               type="text"
               setCheck={checkInput}
+              enter={handleClick}
             />
 
             <TextF
@@ -65,6 +66,7 @@ function Login() {
               setFormData={setFormData}
               type="password"
               setCheck={checkInput}
+              enter={handleClick}
             />
           </Stack>
 

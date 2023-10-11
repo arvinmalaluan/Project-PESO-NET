@@ -38,7 +38,7 @@ const MessageInterface = (props) => {
   const [payload, setPayload] = useState({
     sender: props.name.toLowerCase(),
     message: "",
-    command: "",
+    // command: "",
   });
 
   const [messages, setMessages] = useState([]);
@@ -50,12 +50,13 @@ const MessageInterface = (props) => {
     const socket = new WebSocket(`ws://localhost:8000/getnumber/1`);
 
     socket.onopen = function (event) {
-      socket.send(JSON.stringify({ text: { command: "fetch_messages" } }));
+      // socket.send(JSON.stringify({ text: { command: "fetch_messages" } }));
       console.log("WebSocket is open now.");
     };
 
     socket.onmessage = function (event) {
       const get_data = JSON.parse(event.data);
+      console.log(get_data);
       setMessages((prevMessages) => [
         ...prevMessages,
         {

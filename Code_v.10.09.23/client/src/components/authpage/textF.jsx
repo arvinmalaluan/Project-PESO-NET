@@ -1,7 +1,15 @@
 import { Stack, TextField, Typography } from "@mui/material";
 import { useState, useEffect } from "react";
 
-function TextF({ label, placeholder, formData, setFormData, type, setCheck }) {
+function TextF({
+  label,
+  placeholder,
+  formData,
+  setFormData,
+  type,
+  setCheck,
+  enter,
+}) {
   const [isEmpty, setIsEmpty] = useState(false);
 
   const handleChange = (event) => {
@@ -21,6 +29,10 @@ function TextF({ label, placeholder, formData, setFormData, type, setCheck }) {
       placeholder === "Password" &&
         setFormData({ ...formData, password: event.target.value });
     }
+  };
+
+  const onEnter = (e) => {
+    e.key === "Enter" && enter();
   };
 
   const handleBlur = (event) => {
@@ -61,6 +73,7 @@ function TextF({ label, placeholder, formData, setFormData, type, setCheck }) {
           error={isEmpty}
           helperText={isEmpty ? "* field is required" : ""}
           onBlur={handleBlur}
+          onKeyDown={onEnter}
         />
       </Stack>
     </>

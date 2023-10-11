@@ -1,33 +1,42 @@
 from django.db import models
 
-from seekerFolder.models import Account
+from seekerFolder.models import AllProfile
 
 
 class Conversation(models.Model):
     involve_one = models.ForeignKey(
-        Account, on_delete=models.CASCADE, related_name='conversations_one')
+        AllProfile, on_delete=models.CASCADE, related_name='conversations_one', null=True, blank=True)
     involve_two = models.ForeignKey(
-        Account, on_delete=models.CASCADE, related_name='conversations_two')
-    custom_key = models.CharField(max_length=20, blank=True)
+        AllProfile, on_delete=models.CASCADE, related_name='conversations_two', null=True, blank=True)
+    custom_key = models.CharField(
+        max_length=20, primary_key=True, blank=True, unique=True)
+    involve_one_name = models.CharField(max_length=200, null=True, blank=True)
+    involve_two_name = models.CharField(max_length=200, null=True, blank=True)
+    profile_one = models.ImageField(null=True, blank=True, upload_to='images/')
+    profile_two = models.ImageField(null=True, blank=True, upload_to='images/')
 
     def save(self, *args, **kwargs):
         val = ''
 
-        if (self.involve_one.id > self.involve_two.id):
-            val = f"{self.involve_one.id}{self.involve_two.id}"
+        if (self.involve_one.account > self.involve_two.account):
+            val = f"{self.involve_one.account}{self.involve_two.account}"
         else:
-            val = f"{self.involve_two.id}{self.involve_one.id}"
+            val = f"{self.involve_two.account}{self.involve_one.account}"
 
         self.custom_key = val
+        self.involve_one_name = self.involve_one.name
+        self.involve_two_name = self.involve_two.name
+        self.profile_one = self.involve_one.photo
+        self.profile_two = self.involve_two.photo
         super().save(*args, **kwargs)
 
 
 class Messages(models.Model):
     conversation = models.ForeignKey(Conversation, on_delete=models.CASCADE)
-    custom_key = models.CharField(max_length=20)
-    message_content = models.TextField()
+    receiver = models.CharField(max_length=20)
+    message = models.TextField()
     message_created = models.DateTimeField(auto_now_add=True)
 
     @classmethod
-    def last_20_messages(self):
-        return Messages.objects.order_by('-message_created').all()[:20]
+    def last_20_messages(cls, filter_by):
+        return cls.objects.filter(conversation__custom_key=filter_by).order_by('message_created')

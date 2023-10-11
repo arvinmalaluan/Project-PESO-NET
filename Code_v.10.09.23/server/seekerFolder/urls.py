@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import PostList, PostDetail, Comment, EngagementSetter, ResumePost, ProfilePost, ResumePut, ProfilePut, EngagementPut, CommentPut
+from .views import PostList, PostDetail, Comment, EngagementSetter, ResumePost, ProfilePost, ResumePut, ProfilePut, EngagementPut, CommentPut, GetAll
 
-from chat.views import Conversation
+from chat.views import create_new_message, Conversation, Messages
 
 urlpatterns = [
     path('create-post', PostList.as_view()),
@@ -18,5 +18,9 @@ urlpatterns = [
     path('create-comment/<int:pk>', CommentPut.as_view()),
 
     # path('get-all', views.get_all_posts, name='get-all'),
-    path('', Conversation.as_view())
+    path('', create_new_message),
+    path('get-messages/', Messages.as_view()),
+    path('get-messages/hey', Conversation.as_view()),
+    path('hey', GetAll.as_view()),
+
 ]

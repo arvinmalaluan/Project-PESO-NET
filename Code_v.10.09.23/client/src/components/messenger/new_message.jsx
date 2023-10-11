@@ -17,10 +17,17 @@ import {
 
 import { useEffect, useState } from "react";
 
-import { get_accounts } from "../../context/GetUserData";
+import { create_convo, get_accounts } from "../../context/GetUserData";
 import jwtDecode from "jwt-decode";
 
-const CreateMessage = () => {
+const CreateMessage = ({
+  list_details,
+  setActive,
+  reload,
+  setReload,
+  setAccList,
+  setSearchOpen,
+}) => {
   const [search, setSearch] = useState("");
   const [details, setDetails] = useState([]);
   const [list, setList] = useState([]);
@@ -32,11 +39,12 @@ const CreateMessage = () => {
     involve_two: "",
   });
 
+  // sender, receiver, custom_key, message
   const [payload, setPayload] = useState({
-    action: "",
-    conversation: "",
+    sender: "",
+    receiver: "",
     custom_key: "",
-    message_content: "",
+    message: "",
   });
 
   const [receiver, setReceiver] = useState("");
@@ -45,6 +53,8 @@ const CreateMessage = () => {
   const open = Boolean(anchorEl);
 
   useEffect(() => {
+    setSearchOpen(false);
+
     get_accounts()
       .then((data) => {
         data.map((item) => {
@@ -64,11 +74,9 @@ const CreateMessage = () => {
 
   useEffect(() => {
     console.log("ready to be submitted");
-    console.log(payload);
   }, [payload.custom_key]);
 
   const handleSearch = (event) => {
-    setAnchorEl(event.currentTarget);
     setSearch(event.target.value);
 
     const searchTerm = event.target.value;
@@ -81,9 +89,15 @@ const CreateMessage = () => {
   };
 
   const handleMenuItemClick = (name, account) => {
+    if (list_details.includes(account)) {
+      setActive(account);
+    } else {
+      setReceiver(name);
+      setConvo({ ...convo, involve_two: account });
+      setPayload({ ...payload, receiver: account });
+    }
+
     setAnchorEl(null);
-    setReceiver(name);
-    setConvo({ ...convo, involve_two: account });
   };
 
   const handleSendMessage = () => {
@@ -91,11 +105,21 @@ const CreateMessage = () => {
 
     convo.involve_one > convo.involve_two
       ? (custom_key =
-          convo.involve_two.toString() + convo.involve_one.toString())
+          convo.involve_one.toString() + convo.involve_two.toString())
       : (custom_key =
-          convo.involve_one.toString() + convo.involve_two.toString());
+          convo.involve_two.toString() + convo.involve_one.toString());
 
-    setPayload({ ...payload, custom_key: custom_key, action: "new_message" });
+    const form_data = {
+      sender: user_id,
+      receiver: payload.receiver,
+      custom_key: custom_key,
+      message: payload.message,
+    };
+
+    create_convo(form_data);
+    setReload(!reload);
+    setAccList([...list_details, payload.receiver]);
+    setActive(payload.receiver);
   };
 
   return (
@@ -137,6 +161,8 @@ const CreateMessage = () => {
                             "& fieldset": { border: "none" },
                           }}
                           onChange={handleSearch}
+                          autoComplete="new-password"
+                          onFocus={(event) => setAnchorEl(event.currentTarget)}
                         />
                       )}
                     </Stack>
@@ -158,14 +184,20 @@ const CreateMessage = () => {
             >
               <CardActions sx={{ mt: "-15px", padding: "0px 16px" }}>
                 <TextField
-                  value={payload.message_content}
+                  value={payload.message}
+                  autoComplete="new-password"
                   placeholder={
                     receiver === ""
                       ? "Currently disabled. Select a recepient first"
                       : "Type your message here"
                   }
                   onChange={(e) => {
-                    setPayload({ ...payload, message_content: e.target.value });
+                    setPayload({ ...payload, message: e.target.value });
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSendMessage();
+                    }
                   }}
                   size="small"
                   inputProps={{ style: { fontSize: 14, padding: "8px 16px" } }}
@@ -178,7 +210,7 @@ const CreateMessage = () => {
                   variant="contained"
                   size="small"
                   disableElevation
-                  disabled={payload.message_content === ""}
+                  disabled={payload.message === ""}
                   onClick={handleSendMessage}
                   sx={{
                     textTransform: "none",
@@ -217,7 +249,11 @@ const CreateMessage = () => {
                   <Stack direction="row" alignItems="center" spacing={2}>
                     <Avatar sx={{ height: 30, width: 30 }} />
                     <Stack>
-                      <Typography fontSize={14}>{item.name}</Typography>
+                      <Typography fontSize={14}>
+                        {item.account == user_id
+                          ? item.name + " (You)"
+                          : item.name}
+                      </Typography>
                     </Stack>
                   </Stack>
                 </MenuItem>
@@ -226,15 +262,29 @@ const CreateMessage = () => {
           })}
 
           {list.length < 1 && (
-            <Typography
-              fontSize={14}
-              sx={{
-                textAlign: "center",
-                margin: "auto",
-              }}
-            >
-              Sorry, we couldn't find any matches.
-            </Typography>
+            <>
+              <Typography
+                fontSize={100}
+                sx={{
+                  textAlign: "center",
+                  marginInline: "auto",
+                  mb: 0,
+                  mt: 10,
+                }}
+              >
+                {">.<"}
+              </Typography>
+              <Typography
+                fontSize={14}
+                sx={{
+                  textAlign: "center",
+                  margin: "auto",
+                  mt: 0,
+                }}
+              >
+                Search their names, kickstart a chat!
+              </Typography>
+            </>
           )}
         </Stack>
       </Popper>

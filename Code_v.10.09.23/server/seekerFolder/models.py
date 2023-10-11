@@ -1,14 +1,37 @@
 from django.db import models
 from userFolder.models import Account
 
-# Job post models ----------------------------------------------------------
+
+class AllProfile(models.Model):
+    account = models.IntegerField(primary_key=True, blank=True)
+    name = models.CharField(max_length=255, null=True, blank=True)
+    photo = models.ImageField(null=True, blank=True)
+    bio = models.CharField(max_length=255, null=True, blank=True)
+    social_links = models.CharField(max_length=255, null=True, blank=True)
+    location = models.CharField(max_length=255, null=True, blank=True)
+    portfolio_link = models.CharField(max_length=255, null=True, blank=True)
+    educational_attainment = models.CharField(
+        max_length=255, null=True, blank=True)
+
+    location = models.CharField(max_length=255, null=True, blank=True)
+    emp_count = models.CharField(max_length=255, null=True, blank=True)
+    subsidiaries_count = models.CharField(
+        max_length=255, null=True, blank=True)
+    comp_overview = models.TextField(null=True, blank=True)
+    comp_overview = models.CharField(max_length=255, null=True, blank=True)
+    site_link = models.CharField(max_length=255, null=True, blank=True)
 
 
 class Post(models.Model):
-    poster = models.ForeignKey(Account, on_delete=models.CASCADE)
-    image = models.ImageField(null=True)
+    profile = models.ForeignKey(AllProfile, on_delete=models.CASCADE)
+    image = models.ImageField(null=True, blank=True, upload_to='images/')
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
+    poster_name = models.CharField(max_length=100, blank=True)
+
+    def save(self, *args, **kwargs):
+        self.poster_name = self.profile.name
+        super().save(*args, **kwargs)
 
 
 class Resume(models.Model):
@@ -56,13 +79,15 @@ class Profile(models.Model):
 
 
 class Comments(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='comments')
+    profile = models.ForeignKey(
+        AllProfile, on_delete=models.CASCADE)
+    # account = models.ForeignKey(Account, on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
-    commentor = models.CharField(max_length=100, blank=True)
-    photo = models.CharField(max_length=100, blank=True)
+    commentor = models.CharField(max_length=100, blank=True, null=True)
+    photo = models.CharField(max_length=100, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         self.commentor = self.profile.name
@@ -71,13 +96,17 @@ class Comments(models.Model):
 
 
 class Engagement(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post, on_delete=models.CASCADE, related_name='engagements')
     is_liked = models.BooleanField(default=False)
+    uni_profile = models.ForeignKey(
+        AllProfile, on_delete=models.CASCADE, related_name='profile')
     is_disliked = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True)
     custom_key = models.CharField(max_length=30, blank=True)
+    engager = models.CharField(max_length=100, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.custom_key = f'{self.post.id}{self.account.id}'
+        self.custom_key = f'{self.post.id}{self.uni_profile.account_id}'
+        self.engager = self.uni_profile.name
         super().save(*args, **kwargs)

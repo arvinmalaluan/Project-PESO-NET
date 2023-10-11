@@ -1,8 +1,8 @@
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
 
-from .models import Post, Comments, Engagement, Resume, Profile
-from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer
+from .models import Post, Comments, Engagement, Resume, AllProfile
+from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer, PostDetailsSerializer
 
 
 class PostList(generics.ListCreateAPIView):
@@ -21,7 +21,7 @@ class ResumePost(generics.ListCreateAPIView):
 
 
 class ProfilePost(generics.ListCreateAPIView):
-    queryset = Profile.objects.all()
+    queryset = AllProfile.objects.all()
     serializer_class = ProfileSerializer
 
 
@@ -38,7 +38,7 @@ class ProfilePut(generics.RetrieveUpdateAPIView):
 
     def get_object(self):
         account = self.kwargs['account']
-        return get_object_or_404(Profile, account=account)
+        return get_object_or_404(AllProfile, account=account)
 
 
 class CommentPut(generics.RetrieveUpdateDestroyAPIView):
@@ -77,3 +77,10 @@ class PostDetail(generics.RetrieveUpdateDestroyAPIView):
         response.data['engagement'] = e_serializer.data
 
         return response
+
+
+class GetAll(generics.ListCreateAPIView):
+    serializer_class = PostDetailsSerializer
+
+    def get_queryset(self):
+        return Post.objects.prefetch_related('comments', 'engagements').all()

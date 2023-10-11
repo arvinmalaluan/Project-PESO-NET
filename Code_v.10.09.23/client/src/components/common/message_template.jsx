@@ -1,8 +1,23 @@
 import { Avatar, Badge, MenuItem, Stack, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { get_profile } from "../../context/GetUserData";
 
-function MessTemp({ set, id, active }) {
+function MessTemp({ set, id, active, setD }) {
+  const [details, setDetails] = useState("");
+
+  useEffect(() => {
+    get_profile(id)
+      .then((data) => {
+        data.name && setDetails(data);
+      })
+      .catch((error) => {
+        setDetails("");
+      });
+  }, []);
+
   const open_message = () => {
     set(id);
+    details.id && setD(details);
   };
 
   return (
@@ -24,7 +39,7 @@ function MessTemp({ set, id, active }) {
           <Avatar />
           <Stack flexGrow={1}>
             <Typography fontSize={16} fontWeight={500}>
-              Arvin Malaluan
+              {details.name ? details.name : "User profile not found"}
             </Typography>
             <Stack direction="row" spacing={1}>
               <Typography fontSize={12}>

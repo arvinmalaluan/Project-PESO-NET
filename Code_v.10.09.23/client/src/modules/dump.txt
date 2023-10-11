@@ -1,0 +1,72 @@
+import { Routes, Route } from "react-router-dom";
+import Signup from "./components/authpage/Signup";
+import Home from "./components/home/Home";
+import TopNav from "./components/common/top_nav";
+import Jobs from "./components/jobs/Jobs";
+import DetailsTemp from "./components/jobs/job_details";
+import Community from "./components/community/Community";
+import Message from "./components/messenger/Message";
+import Notifications from "./components/notifications/Notifications";
+import Profile from "./components/profile/Profile";
+import Resume from "./components/resume/Resume";
+import Saved from "./components/saved/Saved";
+import Status from "./components/status/Status";
+import PrivateRoutes from "./utils/route_guard";
+import CreateProfile from "./components/profile/CreateProfile";
+import TrySocket from "./components/TrySocket";
+
+import { Signin, Register } from "./components";
+
+{Boolean(localStorage.getItem("token")) && <TopNav />}
+
+        <Grid container spacing={5} sx={{ padding: "0 100px" }}>
+          <Routes>
+            <Route path="new-signin" element={<Signin />} />
+            <Route path="new-login" element={<Register />} />
+            {Boolean(localStorage.getItem("token")) ? (
+              <Route path="" element={<Home />} />
+            ) : (
+              <Route path="" element={<Login />} />
+            )}
+            <Route path="register" element={<Signup />} />
+            <Route path="*" element={<Login />} />
+            <Route path="try-socket" element={<TrySocket />} />
+
+            <Route element={<PrivateRoutes />}>
+              <Route path="jobs" element={<Jobs />}>
+                <Route path=":job_id" element={<DetailsTemp />} />
+              </Route>
+              <Route path="community" element={<Community />} />
+              <Route path="messages" element={<Message />}>
+                <Route path=":message_id" element={null} />
+              </Route>
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="profile" element={<Profile />} />
+              <Route path="manage-profile" element={<CreateProfile />} />
+              <Route path="resume" element={<Resume />} />
+              <Route path="saved" element={<Saved />} />
+              <Route path="status" element={<Status />} />
+            </Route>
+          </Routes>
+        </Grid>
+
+
+        // if (check_prev && check_next) {
+      //   if (name === "You") {
+      //     styles = { ...styles, borderRadius: "5px 16px 16px 5px" };
+      //   } else {
+      //     styles = { ...styles, borderRadius: "5px 16px 16px 5px" };
+      //   }
+      // } else if (check_prev) {
+      //   if (name === "You") {
+      //     styles = { ...styles, borderRadius: "5px 16px 16px 16px" };
+      //   } else {
+      //     styles = { ...styles, borderRadius: "16px 16px 5px 16px" };
+      //   }
+      // } else if (check_next) {
+      //   if (name === "You") {
+      //     styles = { ...styles, borderRadius: "16px 16px 16px 5px" };
+      //   } else {
+      //     styles = { ...styles, borderRadius: "16px 5px 16px 16px" };
+      //   }
+      // }

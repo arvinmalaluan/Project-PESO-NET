@@ -1,56 +1,155 @@
 import "./App.css";
-import Login from "./components/authpage/Login";
-import { Grid } from "@mui/material";
 
-import { Routes, Route } from "react-router-dom";
+import { Grid, Stack } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material";
+
+import {
+  NewHome,
+  NewMessages,
+  NewCommunity,
+  NewJobs,
+  NewSavedJobs,
+  NewStatus,
+  NewDocuments,
+  ManageJobs,
+  RecruiterHome,
+  ManageApplicants,
+  HomeAdmin,
+  ManageUsers,
+  Reports,
+  NewSettings,
+} from "./pages";
+
+import SideNavigation from "./modules/common_components/SideNavigation";
+import Header from "./modules/common_components/Header";
+import { Route, Routes } from "react-router-dom";
+import Resume from "./modules/documents_components/Resume";
+import TOR from "./modules/documents_components/TOR";
+import PSA from "./modules/documents_components/PSA";
+import NBI from "./modules/documents_components/NBI";
+import AccountSettings from "./modules/settings_components/AccountSettings";
+import PersonalDetails from "./modules/settings_components/PersonalDetails";
+
+import Login from "./components/authpage/Login";
 import Signup from "./components/authpage/Signup";
-import Home from "./components/home/Home";
-import TopNav from "./components/common/top_nav";
-import Jobs from "./components/jobs/Jobs";
-import DetailsTemp from "./components/jobs/job_details";
-import Community from "./components/community/Community";
-import Message from "./components/messenger/Message";
-import Notifications from "./components/notifications/Notifications";
-import Profile from "./components/profile/Profile";
-import Resume from "./components/resume/Resume";
-import Saved from "./components/saved/Saved";
-import Status from "./components/status/Status";
-import PrivateRoutes from "./utils/route_guard";
-import CreateProfile from "./components/profile/CreateProfile";
-import TrySocket from "./components/TrySocket";
+import jwtDecode from "jwt-decode";
+import { useEffect, useState } from "react";
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "'Onest', sans-serif",
+  },
+});
 
 function App() {
+  const inner_height = window.innerHeight;
+  const role = 1;
+  const is_authenticated = localStorage.getItem("token");
+
+  const [user_role, setUserRole] = useState("");
+
+  useEffect(() => {
+    if (is_authenticated) {
+      const decodedToken = jwtDecode(localStorage.getItem("token"));
+      setUserRole(decodedToken.user_role);
+    }
+  }, []);
+
   return (
     <>
-      {Boolean(localStorage.getItem("token")) && <TopNav />}
-      <Grid container spacing={5} sx={{ padding: "0 100px" }}>
-        <Routes>
-          {Boolean(localStorage.getItem("token")) ? (
-            <Route path="" element={<Home />} />
-          ) : (
-            <Route path="" element={<Login />} />
-          )}
-          <Route path="register" element={<Signup />} />
-          <Route path="*" element={<Login />} />
-          <Route path="try-socket" element={<TrySocket />} />
+      <ThemeProvider theme={theme}>
+        <Grid container>
+          {is_authenticated ? (
+            <>
+              <Grid item md={2} height="100dvh">
+                <SideNavigation />
+              </Grid>
+              <Grid item md={10}>
+                <Header />
+                <Stack
+                  sx={{
+                    height: `${inner_height - 59}px`,
+                    bgcolor: "#f5f5f5",
+                    overflowY: "scroll",
+                  }}
+                >
+                  <Routes>
+                    {user_role === 1 && (
+                      <>
+                        <Route path="/" element={<HomeAdmin />} />
+                        <Route path="/messages" element={<NewMessages />} />
+                        <Route path="/community" element={<NewCommunity />} />
+                        <Route path="/users" element={<ManageUsers />} />
+                        <Route path="/reports" element={<Reports />} />
 
-          <Route element={<PrivateRoutes />}>
-            <Route path="jobs" element={<Jobs />}>
-              <Route path=":job_id" element={<DetailsTemp />} />
-            </Route>
-            <Route path="community" element={<Community />} />
-            <Route path="messages" element={<Message />}>
-              <Route path=":message_id" element={null} />
-            </Route>
-            <Route path="notifications" element={<Notifications />} />
-            <Route path="profile" element={<Profile />} />
-            <Route path="manage-profile" element={<CreateProfile />} />
-            <Route path="resume" element={<Resume />} />
-            <Route path="saved" element={<Saved />} />
-            <Route path="status" element={<Status />} />
-          </Route>
-        </Routes>
-      </Grid>
+                        <Route path="/settings" element={<NewSettings />}>
+                          <Route path="account" element={<AccountSettings />} />
+                          <Route
+                            path="personal"
+                            element={<PersonalDetails />}
+                          />
+                        </Route>
+                      </>
+                    )}
+
+                    {user_role === 2 && (
+                      <>
+                        <Route path="/" element={<NewHome />} />
+                        <Route path="/messages" element={<NewMessages />} />
+                        <Route path="/community" element={<NewCommunity />} />
+                        <Route path="/jobs" element={<NewJobs />} />
+                        <Route path="/saved-jobs" element={<NewSavedJobs />} />
+                        <Route path="/status" element={<NewStatus />} />
+
+                        <Route path="/documents" element={<NewDocuments />}>
+                          <Route path="resume" element={<Resume />} />
+                          <Route path="tor" element={<TOR />} />
+                          <Route path="psa" element={<PSA />} />
+                          <Route path="nbi" element={<NBI />} />
+                        </Route>
+
+                        <Route path="/settings" element={<NewSettings />}>
+                          <Route path="account" element={<AccountSettings />} />
+                          <Route
+                            path="personal"
+                            element={<PersonalDetails />}
+                          />
+                        </Route>
+                      </>
+                    )}
+
+                    {user_role === 3 && (
+                      <>
+                        <Route path="/" element={<RecruiterHome />} />
+                        <Route path="/messages" element={<NewMessages />} />
+                        <Route path="/community" element={<NewCommunity />} />
+                        <Route path="/manage-jobs" element={<ManageJobs />} />
+                        <Route
+                          path="/applicants"
+                          element={<ManageApplicants />}
+                        />
+
+                        <Route path="/settings" element={<NewSettings />}>
+                          <Route path="account" element={<AccountSettings />} />
+                          <Route
+                            path="personal"
+                            element={<PersonalDetails />}
+                          />
+                        </Route>
+                      </>
+                    )}
+                  </Routes>
+                </Stack>
+              </Grid>
+            </>
+          ) : (
+            <Routes>
+              <Route path="/" element={<Login />} />
+              <Route path="/register" element={<Signup />} />
+            </Routes>
+          )}
+        </Grid>
+      </ThemeProvider>
     </>
   );
 }

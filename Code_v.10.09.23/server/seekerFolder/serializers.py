@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Post, Comments, Engagement, Resume, Profile
+from .models import Post, Comments, Engagement, Resume, AllProfile
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -28,6 +28,15 @@ class ResumeSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
+        model = AllProfile
         fields = '__all__'
         # fields = ['name', 'photo', 'bio', 'social_links', 'location', 'portfolio_link', 'educational_attainment']
+
+
+class PostDetailsSerializer(serializers.ModelSerializer):
+    comments = CommentsSerializer(many=True, read_only=True)
+    engagements = EngagementSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Post
+        fields = '__all__'

@@ -43,15 +43,11 @@ export const post_comment = async (data) => {
 };
 
 export const create_post = async (data) => {
-  let response;
+  console.log(data);
 
-  try {
-    response = await axios.post(seeker_url + "/create-post", data);
-  } catch (error) {
-    response = error;
-  }
+  const response = await axios.post(seeker_url + "/create-post", data);
 
-  return response;
+  return response.data;
 };
 
 export const upd_crt_resume = async (data) => {
@@ -79,5 +75,10 @@ export const get_accounts = async () => {
     "http://127.0.0.1:8000/seeker/create-profile"
   );
 
+  return response.data;
+};
+
+export const create_convo = async (form_data) => {
+  const response = await axios.post(seeker_url + "/", form_data);
   return response.data;
 };

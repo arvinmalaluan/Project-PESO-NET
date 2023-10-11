@@ -1,16 +1,11 @@
-import {
-  Button,
-  Grid,
-  Link,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Grid, Link, MenuItem } from "@mui/material";
+import { Stack, TextField, Typography } from "@mui/material";
+
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import TextF from "./textF";
 import register from "./../../utils/registration";
-import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const navigate = useNavigate();
@@ -66,6 +61,8 @@ function Signup() {
     setFormData({ ...formData, role: event.target.value });
   };
 
+  const handleRoleKey = () => {};
+
   return (
     <>
       <Grid item md={6} sm={12}>
@@ -97,11 +94,15 @@ function Signup() {
                 size="small"
                 value={selectedRole}
                 onChange={handleRoleChange}
+                onKeyDown={handleRoleKey}
                 error={roleError}
                 onBlur={handleBlur}
                 helperText={roleError ? "* field is required" : ""}
+                sx={{
+                  ".MuiInputBase-input": { fontSize: "14px" },
+                }}
               >
-                <MenuItem value="0" disabled>
+                <MenuItem value="0" sx={{ fontSize: "14px" }} disabled>
                   Select role
                 </MenuItem>
                 <MenuItem value="2" sx={{ fontSize: "14px" }}>
