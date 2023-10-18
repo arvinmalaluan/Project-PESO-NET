@@ -22,12 +22,16 @@ import check_position from "./format_chats";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
 
-const MessageDetails = ({ id }) => {
+const MessageDetails = ({ id, details }) => {
   const height_setter = window.innerHeight;
   const { user_id } = jwtDecode(localStorage.getItem("token"));
 
   const [messages, setMessages] = useState([]);
   const [payload, setPayload] = useState({});
+  const [socket, setSocket] = useState(null);
+  const [showMore, setShowMore] = useState(false);
+
+  console.log(details);
 
   useEffect(() => {
     const socket = new WebSocket(`ws://localhost:8000/get-my-convo/${id}`);
@@ -39,12 +43,22 @@ const MessageDetails = ({ id }) => {
     socket.onmessage = function (event) {
       const get_data = JSON.parse(event.data);
 
-      console.log(get_data);
+      const temp_holder = {
+        receiver: get_data.text.receiver,
+        message: get_data.text.message,
+      };
+
+      console.log(temp_holder);
+
+      get_data.text.length === undefined &&
+        setMessages((prevstate) => [...prevstate, temp_holder]);
     };
 
     socket.onclose = function (event) {
       console.log("Server closed unexpectedly");
     };
+
+    setSocket(socket);
   }, []);
 
   useEffect(() => {
@@ -69,13 +83,13 @@ const MessageDetails = ({ id }) => {
 
         get_data.text.length !== undefined &&
           get_data.text.map((item) => {
-            console.log(item.receiver, user_id);
             empty_array.push({
-              name: item.receiver == user_id ? "Me" : "You",
+              receiver: item.receiver,
               message: item.message,
             });
           });
 
+        console.log("hello");
         get_data.text.length !== undefined && setMessages(empty_array);
       };
     };
@@ -83,7 +97,7 @@ const MessageDetails = ({ id }) => {
 
   return (
     <Grid container sx={{ height: "100%" }}>
-      <Grid item md={8} sx={{ height: "100%" }}>
+      <Grid item md={showMore ? 8 : 12} sx={{ height: "100%" }}>
         <Stack sx={{ height: "100%", bgcolor: "#fff" }}>
           <Stack
             direction="row"
@@ -93,7 +107,7 @@ const MessageDetails = ({ id }) => {
               height: height_setter * 0.075,
             }}
           >
-            <FileHeader />
+            <FileHeader info={details} setOpen={setShowMore} open={showMore} />
           </Stack>
 
           <Stack
@@ -104,7 +118,7 @@ const MessageDetails = ({ id }) => {
               overflowY: "scroll",
             }}
           >
-            <FileBody messages={messages} />
+            <FileBody messages={messages} me={user_id} />
           </Stack>
 
           <Stack
@@ -117,26 +131,32 @@ const MessageDetails = ({ id }) => {
               paddingInline: "8px 16px",
             }}
           >
-            <FileFooter />
+            <FileFooter id={id} details={details} socket={socket} />
           </Stack>
         </Stack>
       </Grid>
-      <Grid
-        item
-        md={4}
-        sx={{ height: "100%", borderLeft: "1px solid rgba(0, 0, 0, 0.12)" }}
-      >
-        <ConversationInformation />
-      </Grid>
+      {showMore && (
+        <Grid
+          item
+          md={4}
+          sx={{ height: "100%", borderLeft: "1px solid rgba(0, 0, 0, 0.12)" }}
+        >
+          <ConversationInformation info={details} />
+        </Grid>
+      )}
     </Grid>
   );
 };
 
 export default MessageDetails;
 
-const FileHeader = () => {
+const FileHeader = ({ open, setOpen, info }) => {
   const filter_color =
     "invert(22%) sepia(79%) saturate(2464%) hue-rotate(233deg) brightness(102%) contrast(87%)";
+
+  const handleShow = () => {
+    setOpen(!open);
+  };
 
   return (
     <>
@@ -147,8 +167,11 @@ const FileHeader = () => {
         alignItems="center"
         sx={{ height: "100%" }}
       >
-        <Avatar sx={{ height: 30, width: 30 }} />
-        <Typography fontSize={14}>Astrid S.</Typography>
+        <Avatar
+          src={info.profile ? info.profile : ""}
+          sx={{ height: 30, width: 30 }}
+        />
+        <Typography fontSize={14}>{info.name}</Typography>
       </Stack>
 
       <Stack direction="row" mr={2} spacing={1}>
@@ -170,7 +193,7 @@ const FileHeader = () => {
           />
         </IconButton>
 
-        <IconButton>
+        <IconButton onClick={handleShow}>
           <img
             src={dots_horiz}
             style={{ filter: filter_color }}
@@ -183,19 +206,13 @@ const FileHeader = () => {
   );
 };
 
-const FileBody = ({ messages }) => {
-  const check_prev_next = (name, idx) => {
-    if (name === "Me") {
+const FileBody = ({ messages, me }) => {
+  const check_location = (if_sender) => {
+    if (if_sender.toString() === me.toString()) {
+      return { justifyContent: "start" };
+    } else {
       return { justifyContent: "end" };
     }
-  };
-
-  console.log(messages);
-
-  const msg_styles = (name, idx) => {
-    const return_msg = check_position(name, idx, messages);
-
-    return return_msg;
   };
 
   return (
@@ -209,27 +226,15 @@ const FileBody = ({ messages }) => {
             spacing={1}
             mt={1}
             mr={1}
-            sx={() => check_prev_next(item.name, idx)}
+            sx={() => check_location(item.receiver)}
           >
-            {item.name === "You" &&
-            idx !== messages.length - 1 &&
-            messages[idx + 1].name !== "You" ? (
-              <>
-                <Avatar sx={{ height: 28, width: 28 }} />
-                <Chip
-                  label={item.message}
-                  sx={() => msg_styles(item.name, idx)}
-                />
-              </>
-            ) : (
-              <Chip
-                label={item.message}
-                style={{ marginLeft: "34px" }}
-                sx={() => msg_styles(item.name, idx)}
-              />
-            )}
-
-            {console.log(messages)}
+            <Chip
+              label={item.message}
+              sx={{
+                bgcolor: item.receiver != me && "#4f46e5",
+                color: item.receiver != me && "#fff",
+              }}
+            />
           </Stack>
         );
       })}
@@ -237,9 +242,44 @@ const FileBody = ({ messages }) => {
   );
 };
 
-const FileFooter = () => {
+const FileFooter = ({ details, id, socket }) => {
+  const [payload, setPayload] = useState({ message: "" });
   const filter_color =
     "invert(22%) sepia(79%) saturate(2464%) hue-rotate(233deg) brightness(102%) contrast(87%)";
+
+  const handleChange = (e) => {
+    setPayload({
+      ...payload,
+      message: e.target.value,
+    });
+  };
+
+  const handleSend = () => {
+    const data = {
+      ...payload,
+      receiver: details.receiver,
+      conversation: id,
+      command: "new_message",
+    };
+
+    try {
+      socket.send(
+        JSON.stringify({
+          text: data,
+        })
+      );
+    } catch (error) {
+      alert(error);
+    }
+  };
+
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+
+      setPayload({ ...payload, message: "" });
+    }
+  };
 
   return (
     <>
@@ -250,11 +290,14 @@ const FileFooter = () => {
       <TextField
         size="small"
         fullWidth
-        placeholder="Search conversation"
+        value={payload.message}
+        placeholder="Type your message here"
         autoComplete="off"
         inputProps={{
           style: { fontSize: 14 },
         }}
+        onChange={handleChange}
+        onKeyDown={handleEnter}
         InputProps={{
           sx: { borderRadius: 5 },
           endAdornment: (
@@ -275,7 +318,7 @@ const FileFooter = () => {
         }}
       />
 
-      <IconButton size="small">
+      <IconButton size="small" onClick={handleSend}>
         <img
           src={send}
           style={{ filter: filter_color }}
@@ -287,7 +330,7 @@ const FileFooter = () => {
   );
 };
 
-const ConversationInformation = () => {
+const ConversationInformation = ({ info }) => {
   const NewIconItem = ({ name, icon }) => {
     return (
       <Stack width="40px" spacing={1}>
@@ -342,6 +385,7 @@ const ConversationInformation = () => {
         }}
       >
         <Avatar
+          src={info.profile ? info.profile : ""}
           sx={{
             height: 72,
             width: 72,
@@ -350,7 +394,7 @@ const ConversationInformation = () => {
           }}
         />
         <Typography fontSize={18} fontWeight={500}>
-          Arvin C. Malaluan
+          {info.name}
         </Typography>
 
         <Stack direction="row" alignItems="center" spacing={2} mt={3}>

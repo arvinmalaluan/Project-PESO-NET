@@ -8,11 +8,28 @@ import {
   CardActions,
   Button,
 } from "@mui/material";
+import jwtDecode from "jwt-decode";
 
 import { useLocation } from "react-router-dom";
+import { createDeleteApplication } from "../../context/CRUD_Operations";
 
-function Preview() {
+function Preview({ aD }) {
   const { pathname } = useLocation();
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+
+  const handleCancel = () => {
+    const data = {
+      job: aD.id,
+      applicant: user_id,
+      key: aD.id.toString() + "-" + user_id.toString(),
+    };
+
+    createDeleteApplication(data)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   return (
     <>
@@ -33,13 +50,13 @@ function Preview() {
           />
           <CardContent sx={{ paddingTop: 0 }}>
             <Typography fontSize={18} mb={0.2} fontWeight={500}>
-              UI/UX Designer
+              {aD.job_title}
             </Typography>
             <Typography fontSize={14} mb={0.2} color="#333333">
-              Google, Inc.
+              {aD.name}
             </Typography>
             <Typography fontSize={12} mb={1.5} color="#333333">
-              Simlong, Batangas City, Batangas
+              {aD.location}
             </Typography>
             <Divider />
 
@@ -47,17 +64,14 @@ function Preview() {
               About the role
             </Typography>
             <Typography fontSize={14} color="#333333">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum
-              repudiandae animi exercitationem dolorem, ex unde accusamus totam
-              nobis amet. Laborum cumque nulla amet numquam aperiam ratione nam
-              est harum beatae!
+              {aD.job_desc}
             </Typography>
 
             <Typography fontSize={16} mt={2} fontWeight={500}>
               Required Experience
             </Typography>
             <Typography fontSize={14} color="#333333">
-              2 years of experience with IT related field
+              {aD.req_expi}
             </Typography>
 
             <Stack direction="row" spacing={1} mt={2} alignItems="end">
@@ -65,7 +79,7 @@ function Preview() {
                 Job Type :
               </Typography>
               <Typography fontSize={14} color="#333333">
-                Full time
+                {aD.emp_type}
               </Typography>
             </Stack>
 
@@ -80,16 +94,14 @@ function Preview() {
           </CardContent>
         </Stack>
         <CardActions sx={{ padding: "0 16px 8px" }}>
-          <Button variant="outlined" fullWidth sx={{ textTransform: "none" }}>
-            Details
-          </Button>
           <Button
+            onClick={handleCancel}
             variant="contained"
             sx={{ textTransform: "none" }}
             disableElevation
             fullWidth
           >
-            {pathname !== "/status" ? "Apply" : "Cancel"}
+            {pathname !== "/status" ? "Apply" : "Cancel Application"}
           </Button>
         </CardActions>
       </Card>

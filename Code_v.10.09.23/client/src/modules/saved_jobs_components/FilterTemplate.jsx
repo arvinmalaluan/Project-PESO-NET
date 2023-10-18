@@ -45,9 +45,10 @@ const Filter = ({ title, items }) => {
         {title}
       </Typography>
 
-      {items.map((item) => {
+      {items.map((item, idx) => {
         return (
           <FormControlLabel
+            key={idx}
             sx={{
               height: 25,
               marginBottom: 0.5,

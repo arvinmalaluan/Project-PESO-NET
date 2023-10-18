@@ -30,7 +30,7 @@ class CommunityConsumer(WebsocketConsumer):
         if data['text']['action'] == "fetch_all":
             try:
                 posts = models.Post.objects.prefetch_related(
-                    'comments', 'engagements').all()
+                    'comments', 'engagements').order_by('-created')
                 serializer = serializers.PostDetailsSerializer(
                     posts, many=True)
 

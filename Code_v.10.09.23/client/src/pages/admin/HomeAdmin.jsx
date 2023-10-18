@@ -11,57 +11,74 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { circle, dots_horiz } from "../../templates/image_imports";
+import { get2Roles, getDbStats } from "../../context/CRUD_Operations";
+
+import { format_date } from "./../../utils/format_date";
 
 const HomeAdmin = () => {
-  const [upperStat, setUpperStat] = useState([
-    { title: "Total Users", count: "100", subtitle: "2 new users" },
-    { title: "Pending Verifications", count: "2", subtitle: "4 new request" },
-    { title: "New Messages", count: "300", subtitle: "4 new messages" },
-    { title: "Pending User Reports", count: "200", subtitle: "5 new reports" },
-  ]);
+  const [upperStat, setUpperStat] = useState();
+
+  useEffect(() => {
+    getDbStats()
+      .then((data) => setUpperStat(data))
+      .catch((error) => console.log(error));
+  }, []);
 
   return (
-    <Grid container>
-      <Grid item md={9} sx={{ padding: "16px 16px 16px 32px" }}>
+    <Grid container sx={{ bgcolor: "#fff" }}>
+      <Grid item md={8} sx={{ padding: "16px 16px 16px 32px" }}>
         <Typography mb={1}>Statistics</Typography>
         <Grid container spacing={2} sx={{ boxSizing: "border-box" }}>
-          {upperStat.map((item, idx) => {
-            return (
-              <Grid item key={idx} md={3} sx={{ width: "100%" }}>
-                <CustomChip
-                  title={item.title}
-                  count={item.count}
-                  subtitle={item.subtitle}
-                />
-              </Grid>
-            );
-          })}
-
-          <Grid item md={6}>
-            <Visualilzation />
+          <Grid item md={6} sx={{ width: "100%" }}>
+            <CustomChip
+              title={"Users Overview"}
+              count={upperStat && upperStat.tu}
+              subtitle={`${
+                upperStat && upperStat.users[0].unique_user_count
+              } new users today`}
+            />
+          </Grid>
+          <Grid item md={6} sx={{ width: "100%" }}>
+            <CustomChip
+              title={"Waiting for Verifications"}
+              count={upperStat && upperStat.tp}
+              subtitle={`${
+                upperStat && upperStat.pending[0].unique_user_count
+              } new pending request today`}
+            />
+          </Grid>
+          <Grid item md={6} sx={{ width: "100%" }}>
+            <CustomChip
+              title={"Message Activity"}
+              count={upperStat && upperStat.tm}
+              subtitle={`${
+                upperStat && upperStat.pending[0].unique_user_count
+              } new message today`}
+            />
+          </Grid>
+          <Grid item md={6} sx={{ width: "100%" }}>
+            <CustomChip
+              title={"Reports Status"}
+              count={0}
+              subtitle={`${0} new reports today`}
+            />
           </Grid>
 
-          <Grid item md={6}>
-            <Visualilzation />
-          </Grid>
+          {console.log(upperStat)}
 
           <Grid item md={12}>
-            <Typography mb={1}>Recently registered user</Typography>
+            <Typography pb={1}>Recently registered user</Typography>
             <TableTemplate />
           </Grid>
         </Grid>
       </Grid>
 
-      <Grid item md={3} sx={{ padding: "16px 32px", bgcolor: "#fff" }}>
-        <Stack>
-          <Typography mb={2}>Pending User Reports</Typography>
+      <Grid item md={4} sx={{ padding: "16px 32px", bgcolor: "#fff" }}>
+        <CustomReport />
 
-          <Stack>
-            <CustomReport />
-          </Stack>
-        </Stack>
+        <Reports />
       </Grid>
     </Grid>
   );
@@ -71,13 +88,22 @@ export default HomeAdmin;
 
 const CustomChip = ({ title, count, subtitle }) => {
   return (
-    <Stack sx={{ width: "100%", bgcolor: "#fff" }}>
+    <Stack
+      sx={{
+        width: "100%",
+        bgcolor: "#fff",
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRadius: "5px",
+      }}
+    >
       <Stack sx={{ padding: 3 }}>
-        <Typography fontSize={14} fontWeight={300}>
+        <Typography fontSize={14} fontWeight={600} color="#64748b">
           {title}
         </Typography>
-        <Typography fontSize={18}>{count}</Typography>
-        <Typography fontSize={12} mt={3} fontWeight={300}>
+        <Typography fontSize={18} fontWeight={600}>
+          {count}
+        </Typography>
+        <Typography fontSize={12} mt={3} fontWeight={500}>
           {subtitle}
         </Typography>
       </Stack>
@@ -98,34 +124,77 @@ const Visualilzation = () => {
 };
 
 const TableTemplate = () => {
+  const [newUsers, setNewUsers] = useState([]);
+
+  useEffect(() => {
+    get2Roles()
+      .then((data) => {
+        const reversed = data.reverse();
+        const sliced = reversed.slice(0, 5);
+
+        setNewUsers(sliced);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
-    <Stack sx={{ bgcolor: "white" }}>
-      <Stack sx={{ padding: 2 }}>
-        <Table>
+    <Stack
+      sx={{
+        bgcolor: "white",
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRadius: "5px",
+      }}
+    >
+      <Stack>
+        <Table sx={{ bgcolor: "transparent" }}>
           <TableHead>
-            <TableRow>
-              <TableCell sx={{ fontWeight: "bold" }}>Name</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Email Address</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Status</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Last login</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Role</TableCell>
-              <TableCell sx={{ fontWeight: "bold" }}>Action</TableCell>
+            <TableRow
+              sx={{
+                "& .MuiTableCell-sizeMedium": {
+                  padding: "10px 16px",
+                  color: "#64748b",
+                  fontWeight: "600",
+                  fontSize: 14,
+                  bgcolor: "rgba(80, 145, 178, 0.04)",
+                },
+              }}
+            >
+              <TableCell>Name</TableCell>
+              <TableCell>Email Address</TableCell>
+              <TableCell>Status</TableCell>
+              <TableCell>Created</TableCell>
+              <TableCell>Role</TableCell>
+              <TableCell>Action</TableCell>
             </TableRow>
           </TableHead>
 
-          <TableBody>
-            <TableRow>
-              <TableCell sx={{ fontSize: 14 }}>Arvin Malaluan</TableCell>
-              <TableCell>malaluanofficial7@gmail.com</TableCell>
-              <TableCell>Allowed</TableCell>
-              <TableCell>September 25, 2001</TableCell>
-              <TableCell>Seeker</TableCell>
-              <TableCell>
-                <IconButton>
-                  <img src={dots_horiz} alt="" />
-                </IconButton>
-              </TableCell>
-            </TableRow>
+          <TableBody
+            sx={{
+              "& .MuiTableCell-sizeMedium": {
+                fontSize: 14,
+              },
+            }}
+          >
+            {newUsers.map((user, idx) => {
+              return (
+                <TableRow key={idx}>
+                  <TableCell sx={{ fontSize: 14 }}>
+                    {user.allprofile[0] ? user.allprofile[0].name : "unset"}
+                  </TableCell>
+                  <TableCell>{user.email}</TableCell>
+                  <TableCell>{user.status}</TableCell>
+                  <TableCell>{format_date(user.created)}</TableCell>
+                  <TableCell>
+                    {user.role == 3 ? "Job Recruiter" : "Job Seeker"}
+                  </TableCell>
+                  <TableCell>
+                    <IconButton>
+                      <img src={dots_horiz} alt="" />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </Stack>
@@ -135,30 +204,46 @@ const TableTemplate = () => {
 
 const CustomReport = () => {
   return (
-    <Stack
-      pl={4}
-      pb={2}
-      ml={0.5}
-      sx={{ borderLeft: "1px solid black", position: "relative" }}
-    >
-      <Typography fontWeight={300} fontSize={12} marginTop="-4px">
-        2 days ago
-      </Typography>
-      <Typography fontSize={14} className="clip-2-lines">
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto
-        fuga sit culpa sapiente, dolores fugit quidem ullam, nesciunt sunt, vel
-        nostrum. Vero numquam saepe dolorum, quaerat unde recusandae beatae
-        sapiente.
-      </Typography>
-      <Typography fontSize={12} mt={1} color="primary">
-        View report <span style={{ marginLeft: "5px" }}>&#10230;</span>
-      </Typography>
+    <Stack>
+      <Typography mb={1}>Job Applications vs. Job Creations</Typography>
 
-      <img
-        src={circle}
-        style={{ height: "10px", position: "absolute", left: -5, top: 0 }}
-        alt=""
-      />
+      <Stack
+        sx={{
+          height: "295px",
+          border: "1px solid rgba(0, 0, 0, 0.12)",
+          borderRadius: "5px",
+        }}
+      >
+        p
+      </Stack>
+    </Stack>
+  );
+};
+
+const Reports = () => {
+  return (
+    <Stack mt={6}>
+      <Stack
+        sx={{
+          paddingBlock: 1,
+          bgcolor: "rgba(80, 145, 178, 0.04)",
+          paddingInline: 1,
+          borderRadius: "5px",
+        }}
+      >
+        <Typography color={"#64748b"}>Reports</Typography>
+      </Stack>
+
+      <Stack
+        mt={1}
+        sx={{
+          height: "295px",
+          border: "1px solid rgba(0, 0, 0, 0.12)",
+          borderRadius: "5px",
+        }}
+      >
+        p
+      </Stack>
     </Stack>
   );
 };

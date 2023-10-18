@@ -37,7 +37,7 @@ import { useEffect, useState } from "react";
 
 const theme = createTheme({
   typography: {
-    fontFamily: "'Onest', sans-serif",
+    fontFamily: "'Quicksand', sans-serif",
   },
 });
 
@@ -61,15 +61,26 @@ function App() {
         <Grid container>
           {is_authenticated ? (
             <>
-              <Grid item md={2} height="100dvh">
+              <Grid
+                item
+                md={2}
+                sx={{
+                  height: {
+                    sm: "100dvh",
+                  },
+                  display: {
+                    xs: "none",
+                    md: "block",
+                  },
+                }}
+              >
                 <SideNavigation />
               </Grid>
-              <Grid item md={10}>
+              <Grid item md={10} sm={12}>
                 <Header />
                 <Stack
                   sx={{
                     height: `${inner_height - 59}px`,
-                    bgcolor: "#f5f5f5",
                     overflowY: "scroll",
                   }}
                 >

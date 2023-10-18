@@ -10,26 +10,62 @@ import { search_icon } from "../../templates/image_imports";
 import JobPosts from "../../modules/jobs_components/JobPosts";
 import StatusView from "../../modules/saved_jobs_components/StatusView";
 
+import { useEffect, useState } from "react";
+import { getAllJobs } from "../../context/CRUD_Operations";
+import jwtDecode from "jwt-decode";
+
 const NewStatus = () => {
+  const { user_id } = jwtDecode(localStorage.getItem("token"));
+  const [jobs, setJobs] = useState([]);
+  const [activeDetails, setActiveDetails] = useState({});
+
+  useEffect(() => {
+    getAllJobs()
+      .then((data) => {
+        let newdata = [];
+
+        data.map((item, idx) => {
+          for (const myapp of item.applicants) {
+            const ck = myapp.custom_key.split("-");
+
+            if (ck[1] == user_id) {
+              newdata.push(item);
+            }
+          }
+        });
+
+        setJobs(newdata);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <Grid container sx={{ height: "100%" }}>
       <Grid
         item
-        md={3}
+        md={activeDetails.id ? 3 : 7}
         sx={{ height: "100%", bgcolor: "#fff", padding: "16px 16px 16px 32px" }}
       >
         <DefinedTextField />
         <Stack mt={2} spacing={1}>
-          <JobPosts />
-          <JobPosts />
-          <JobPosts />
-          <JobPosts />
+          {jobs.map((item, idx) => {
+            return (
+              <JobPosts
+                key={idx}
+                details={item}
+                aD={activeDetails}
+                setAD={setActiveDetails}
+              />
+            );
+          })}
         </Stack>
       </Grid>
 
-      <Grid item md={4} sx={{ height: "100%", bgcolor: "#fff", padding: 2 }}>
-        <Preview />
-      </Grid>
+      {activeDetails.id && (
+        <Grid item md={4} sx={{ height: "100%", bgcolor: "#fff", padding: 2 }}>
+          <Preview aD={activeDetails} />
+        </Grid>
+      )}
 
       <Grid
         item

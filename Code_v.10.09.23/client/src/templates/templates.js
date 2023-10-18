@@ -78,18 +78,18 @@ export const default_data = {
 
   job_related_data: [
     { id: 4, name: "Jobs", icon: jobs_icon, path: "/jobs" },
-    { id: 5, name: "Saved Jobs", icon: saved_job_icon, path: "/saved-jobs" },
+    // { id: 5, name: "Saved Jobs", icon: saved_job_icon, path: "/saved-jobs" },
     { id: 6, name: "Manage Documents", icon: resume_icon, path: "/documents" },
     { id: 7, name: "View Application", icon: resume_icon, path: "/status" },
   ],
 
   user_preference: [
-    {
-      id: 8,
-      name: "Contact Support",
-      icon: contact_support_icon,
-      path: "/contact-support",
-    },
+    // {
+    //   id: 8,
+    //   name: "Contact Support",
+    //   icon: contact_support_icon,
+    //   path: "/contact-support",
+    // },
     { id: 9, name: "Settings", icon: settings_icon, path: "/settings" },
   ],
 
@@ -209,5 +209,52 @@ export const default_data = {
       placeholder: "https://www.abccorporation.com",
       name: "site_link",
     },
+  ],
+
+  job_post: [
+    { label: "Job Title", placeholder: "Software Engineer", name: "job_title" },
+    { label: "Employment Type", placeholder: "Full-Time", name: "emp_type" },
+    {
+      label: "Required Experience",
+      placeholder: "2 years in software development",
+      name: "req_expi",
+    },
+    {
+      label: "Required Education",
+      placeholder: "Bachelor's Degree in Computer Science",
+      name: "req_educ",
+    },
+    {
+      label: "Job Description",
+      placeholder: "Develop and maintain web applications",
+      name: "job_desc",
+    },
+    {
+      label: "Contact Information",
+      placeholder: "hr@company.com",
+      name: "contact_info",
+    },
+    { label: "App Duedate", placeholder: "2023-12-31", name: "app_duedate" },
+    {
+      label: "Skills",
+      placeholder: "e.g. Web Development, Programming",
+      name: "skills",
+    },
+    {
+      label: "Qualifications",
+      placeholder: "Proficient in JavaScript and Python",
+      name: "qualifications",
+    },
+    {
+      label: "Responsibilities",
+      placeholder: "Code, test, and debug new software",
+      name: "responsibilities",
+    },
+    {
+      label: "Benefits",
+      placeholder: "Health insurance, retirement plan, paid time off",
+      name: "benefits",
+    },
+    { label: "Salary", placeholder: "not mentioned", name: "salary" },
   ],
 };

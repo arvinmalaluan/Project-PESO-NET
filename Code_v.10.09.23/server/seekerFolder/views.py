@@ -1,8 +1,19 @@
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
+from django.db.models import Prefetch
 
 from .models import Post, Comments, Engagement, Resume, AllProfile
-from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer, PostDetailsSerializer
+from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer, PostDetailsSerializer, AccWithProfSerializer
+from userFolder import models
+
+from django.utils import timezone
+from datetime import datetime, timedelta
+from django.db.models import Count, Q
+from django.db.models.functions import TruncDate
+from django.http import JsonResponse
+
+from userFolder.models import Account
+from chat.models import Messages
 
 
 class PostList(generics.ListCreateAPIView):
@@ -84,3 +95,93 @@ class GetAll(generics.ListCreateAPIView):
 
     def get_queryset(self):
         return Post.objects.prefetch_related('comments', 'engagements').all()
+
+
+class PWRoles(generics.ListAPIView):
+    queryset = AllProfile.get_profiles_with_role([2])
+    serializer_class = ProfileSerializer
+
+
+class GAUWP(generics.ListAPIView):
+    serializer_class = AccWithProfSerializer
+
+    def get_queryset(self):
+        return models.Account.objects.filter(role__id__in=[2, 3]).prefetch_related('allprofile')
+
+
+def get_unique_users_last_three_days(request):
+    end_date = timezone.now().date()
+    start_date = end_date - timedelta(days=3)
+
+    print(end_date, start_date)
+
+    unique_users_per_day = Account.objects.filter(
+        created__date__range=[start_date, end_date],
+        role__in=[2, 3]
+    ).annotate(
+        activity_date=TruncDate('created')
+    ).values('activity_date').annotate(
+        unique_user_count=Count('id', distinct=True)
+    ).order_by('activity_date')
+
+    pending = Account.objects.filter(
+        created__date__range=[start_date, end_date],
+        role=3,
+        status='pending'
+    ).annotate(
+        activity_date=TruncDate('created')
+    ).values('activity_date').annotate(
+        unique_user_count=Count('id', distinct=True)
+    ).order_by('activity_date')
+
+    messages = Messages.objects.filter(
+        message_created__date__range=[start_date, end_date],
+        receiver='18'
+    ).annotate(
+        activity_date=TruncDate('message_created')
+    ).values('activity_date').annotate(
+        unique_user_count=Count('conversation', distinct=True)
+    ).order_by('activity_date')
+
+    total_users = Account.objects.filter(
+        role__in=[2, 3]
+    ).aggregate(
+        total_count=Count('id', distinct=True)
+    )
+
+    total_pending = Account.objects.filter(
+        role="3",
+        status="pending"
+    ).aggregate(
+        total_count=Count('id', distinct=True)
+    )
+
+    total_messages = Messages.objects.filter(
+        receiver="18"
+    ).aggregate(
+        total_count=Count('conversation', distinct=True)
+    )
+
+    users = list(unique_users_per_day)
+    pndng = list(pending)
+    mssgs = list(messages)
+
+    ttl_users = total_users['total_count']
+    ttl_pndng = total_pending['total_count']
+    ttl_mssgs = total_messages['total_count']
+
+    print(ttl_users, ttl_pndng, ttl_mssgs)
+
+    data = {'users': users, "pending": pndng, "messages": mssgs,
+            'tu': ttl_users, 'tp': ttl_pndng, 'tm': ttl_mssgs}
+    return JsonResponse(data, safe=False)
+
+
+{
+    "email": "arvinmalaluan7@gmail.com",
+    "username": "newuser",
+    "password": "pbkdf2_sha256$600000$1JrrsUBcPPEyksqCH9tEZC$KUlRs2VxYSdg3XgMsIuZuwM2LM8TsXHzeoR944oizSk=",
+    "status": "allowed",
+    "created": "2023-09-21T17:15:45.973380Z",
+    "role": 2
+}

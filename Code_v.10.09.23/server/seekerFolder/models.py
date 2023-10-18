@@ -4,8 +4,10 @@ from userFolder.models import Account
 
 class AllProfile(models.Model):
     account = models.IntegerField(primary_key=True, blank=True)
+    fk = models.ForeignKey(
+        Account, on_delete=models.CASCADE, blank=True, null=True, related_name='allprofile')
     name = models.CharField(max_length=255, null=True, blank=True)
-    photo = models.ImageField(null=True, blank=True)
+    photo = models.ImageField(null=True, blank=True, upload_to='images/')
     bio = models.CharField(max_length=255, null=True, blank=True)
     social_links = models.CharField(max_length=255, null=True, blank=True)
     location = models.CharField(max_length=255, null=True, blank=True)
@@ -20,6 +22,10 @@ class AllProfile(models.Model):
     comp_overview = models.TextField(null=True, blank=True)
     comp_overview = models.CharField(max_length=255, null=True, blank=True)
     site_link = models.CharField(max_length=255, null=True, blank=True)
+
+    @classmethod
+    def get_profiles_with_role(cls, role):
+        return cls.objects.filter(fk__role__in=role)
 
 
 class Post(models.Model):
@@ -83,7 +89,6 @@ class Comments(models.Model):
         Post, on_delete=models.CASCADE, related_name='comments')
     profile = models.ForeignKey(
         AllProfile, on_delete=models.CASCADE)
-    # account = models.ForeignKey(Account, on_delete=models.CASCADE)
     content = models.TextField(max_length=500)
     created = models.DateTimeField(auto_now_add=True)
     commentor = models.CharField(max_length=100, blank=True, null=True)
@@ -107,6 +112,6 @@ class Engagement(models.Model):
     engager = models.CharField(max_length=100, null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        self.custom_key = f'{self.post.id}{self.uni_profile.account_id}'
+        self.custom_key = f'{self.post.id}{self.uni_profile.account}'
         self.engager = self.uni_profile.name
         super().save(*args, **kwargs)

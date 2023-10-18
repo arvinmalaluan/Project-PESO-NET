@@ -35,6 +35,27 @@ import like from "./../assets/icons/thumbs-up.svg";
 import dislike from "./../assets/icons/thumbs-down.svg";
 import dislike_clicked from "./../assets/icons/dislike-clicked.svg";
 import like_clicked from "./../assets/icons/like-clicked.svg";
+import caret_sort from "./../assets/icons/caret_sort.svg";
+import darrowleft from "./../assets/icons/darrowleft.svg";
+import darrowright from "./../assets/icons/darrowright.svg";
+import chevleft from "./../assets/icons/chevron-left.svg";
+
+import newedit from "./../assets/icons/newedit.svg";
+import newtrash from "./../assets/icons/newtrash.svg";
+import neweye from "./../assets/icons/neweye.svg";
+import newcopy from "./../assets/icons/newcopy.svg";
+
+import messagecircle from "./../assets/icons/message-circle.svg";
+import barchart2 from "./../assets/icons/bar-chart-2.svg";
+
+import film from "./../assets/icons/film.svg";
+import image from "./../assets/icons/image.svg";
+
+import refreshccw from "./../assets/icons/refreshccw.svg";
+import xsquare from "./../assets/icons/xsquare.svg";
+import calendar from "./../assets/icons/calendar.svg";
+
+import menu from "./../assets/icons/menu.svg";
 
 export {
   home_icon,
@@ -74,4 +95,20 @@ export {
   dislike,
   like_clicked,
   dislike_clicked,
+  caret_sort,
+  darrowleft,
+  darrowright,
+  chevleft,
+  neweye,
+  newtrash,
+  newcopy,
+  newedit,
+  messagecircle,
+  barchart2,
+  film,
+  image,
+  refreshccw,
+  xsquare,
+  calendar,
+  menu,
 };

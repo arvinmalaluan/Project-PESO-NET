@@ -128,6 +128,13 @@ const FileFooter = ({ pay, set, setActive, search }) => {
       .catch((error) => console.log(error));
   };
 
+  const handleEnter = (e) => {
+    if (e.key === "Enter") {
+      handleSend();
+      set({ ...pay, message: "" });
+    }
+  };
+
   const handleChange = (e) => {
     set({ ...pay, message: e.target.value });
   };
@@ -142,7 +149,9 @@ const FileFooter = ({ pay, set, setActive, search }) => {
         size="small"
         fullWidth
         placeholder="Type your message here"
+        value={pay.message}
         onChange={handleChange}
+        onKeyDown={handleEnter}
         autoComplete="off"
         inputProps={{
           style: { fontSize: 14 },

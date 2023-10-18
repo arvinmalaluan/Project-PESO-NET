@@ -14,13 +14,31 @@ import {
   map_pin,
   search_icon,
 } from "../../templates/image_imports";
+import { useEffect, useState } from "react";
+import JobDetails from "../../modules/jobs_components/JobDetails";
+import { getAllJobs } from "../../context/CRUD_Operations";
+import { format_date } from "./../../utils/format_date";
 
 const NewJobs = () => {
-  const for_loop = [1, 2, 3, 4, 5, 6, , 6, 2, 3, 5, 5];
+  const [active, setActive] = useState(false);
+  const [jobs, setJobs] = useState([]);
+  const [activeDetails, setActiveDetails] = useState({});
+
+  useEffect(() => {
+    getAllJobs()
+      .then((data) => setJobs(data))
+      .catch((error) => console.log(error));
+  }, []);
+
   return (
     <Grid
       container
-      sx={{ bgcolor: "#fff", height: "100%", alignContent: "start" }}
+      sx={{
+        bgcolor: "#fff",
+        height: "100%",
+        alignContent: "start",
+        overflowY: "scroll",
+      }}
     >
       <Grid item md={12} sx={{ height: "100%", paddingInline: 4 }}>
         <Stack direction="row" spacing={1} pt={2}>
@@ -63,20 +81,28 @@ const NewJobs = () => {
           </Typography>
 
           <Grid container columnSpacing={2} rowSpacing={2}>
-            <Grid item md={6}>
-              <JobLists />
+            <Grid item md={active ? 5 : 12}>
+              <Grid container columnSpacing={2} rowSpacing={2}>
+                {jobs.map((job, idx) => {
+                  return (
+                    <Grid item md={active ? 12 : 6} key={idx}>
+                      <JobLists
+                        setActive={setActive}
+                        details={job}
+                        setActiveDetails={setActiveDetails}
+                        activeDetails={activeDetails}
+                      />
+                    </Grid>
+                  );
+                })}
+              </Grid>
             </Grid>
 
-            <Grid item md={6}>
-              <JobLists />
-            </Grid>
-            <Grid item md={6}>
-              <JobLists />
-            </Grid>
-
-            <Grid item md={6}>
-              <JobLists />
-            </Grid>
+            {active && (
+              <Grid item md={7}>
+                <JobDetails details={activeDetails} />
+              </Grid>
+            )}
           </Grid>
         </Stack>
       </Grid>
@@ -86,34 +112,48 @@ const NewJobs = () => {
 
 export default NewJobs;
 
-const JobLists = () => {
+const JobLists = ({ setActive, details, setActiveDetails, activeDetails }) => {
+  const handleClick = () => {
+    setActive(true);
+    setActiveDetails(details);
+  };
   return (
     <MenuItem
+      onClick={handleClick}
       sx={{
         paddingBlock: 2,
         border: "1px solid rgba(0, 0, 0, 0.12)",
         borderRadius: "5px",
+        bgcolor:
+          activeDetails.id === details.id ? "rgba(8, 145, 178, 0.5)" : "",
+        "&:hover": {
+          bgcolor: "rgba(8, 145, 178, 0.8)",
+        },
       }}
     >
       <Avatar variant="rounded" sx={{ marginRight: 2 }} />
       <Stack sx={{ width: "100%" }}>
         <Stack direction="row" sx={{ width: "100%" }}>
           <Typography fontSize={12} flexGrow={1} fontWeight={300}>
-            Google, Inc.
+            {details.name}
           </Typography>
           <Typography fontSize={12} fontWeight={300}>
-            Simlong, Batangas City
+            {format_date(details.created)}
           </Typography>
         </Stack>
 
         <Stack direction="row" alignItems="center" width="100%">
           <Typography fontSize={18} flexGrow={1}>
-            UI/UX Designer
+            {details.job_title}
           </Typography>
-          <Stack direction="row" spacing={1}>
-            <img src={map_pin} className="icon-16x16" alt="" />
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <img
+              src={map_pin}
+              style={{ height: "12px", width: "12px" }}
+              alt=""
+            />
             <Typography fontSize={12} fontWeight={300}>
-              Posted 8hrs. ago.
+              {details.location}
             </Typography>
           </Stack>
         </Stack>

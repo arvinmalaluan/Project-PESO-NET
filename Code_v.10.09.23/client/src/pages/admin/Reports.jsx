@@ -26,14 +26,36 @@ const Reports = () => {
   ];
 
   return (
-    <Grid container sx={{ padding: "16px 32px", height: "100%" }}>
-      <Grid item md={12} sx={{ padding: 2, bgcolor: "white", height: "100%" }}>
-        <Typography fontSize={18}>Reports</Typography>
+    <Grid
+      container
+      sx={{ padding: "16px 32px", height: "100%", bgcolor: "white" }}
+    >
+      <Grid item md={12} sx={{ padding: 2, height: "100%" }}>
+        <Typography fontSize={24} fontWeight={700} mb={2}>
+          Reports
+        </Typography>
 
-        <Stack sx={{ height: "95%", overflowY: "scroll" }}>
+        <Stack
+          sx={{
+            height: "90%",
+            overflowY: "scroll",
+            border: "1px solid rgba(0, 0, 0, 0.12)",
+            borderRadius: "10px",
+          }}
+        >
           <Table>
             <TableHead>
-              <TableRow>
+              <TableRow
+                sx={{
+                  "& .MuiTableCell-sizeMedium": {
+                    padding: "10px 16px",
+                    color: "#64748b",
+                    fontWeight: "600",
+                    fontSize: 14,
+                  },
+                  "&:hover": { bgcolor: "rgba(80, 145, 178, 0.04)" },
+                }}
+              >
                 <TableCell>ID</TableCell>
                 <TableCell>Topic</TableCell>
                 <TableCell>Scope</TableCell>
@@ -43,13 +65,20 @@ const Reports = () => {
 
             {arrayOfReports.map((item, idx) => {
               return (
-                <TableBody>
-                  <TableRow>
+                <TableBody key={idx}>
+                  <TableRow
+                    sx={{
+                      "& .MuiTableCell-sizeMedium": {
+                        fontSize: 14,
+                      },
+                      "&:hover": { bgcolor: "rgba(80, 145, 178, 0.04)" },
+                    }}
+                  >
                     <TableCell>{idx + 1}</TableCell>
                     <TableCell>{item}</TableCell>
                     <TableCell>
-                      <Stack direction="row" alignItems="center" spacing={2}>
-                        <Typography>Oct. - Nov.</Typography>
+                      <Stack direction="row" alignItems="end" spacing={2}>
+                        <Typography fontSize={14}>Oct. - Nov.</Typography>
                         <Typography fontSize={12} color="primary">
                           Change
                         </Typography>

@@ -2,7 +2,7 @@ import { Avatar, Button, IconButton, InputAdornment } from "@mui/material";
 import { Stack, TextField, Typography } from "@mui/material";
 
 // Import for icons
-import { close_icon, search_icon } from "./../../templates/image_imports";
+import { close_icon, menu, search_icon } from "./../../templates/image_imports";
 import { bell_icon, send_icon } from "./../../templates/image_imports";
 
 import { useLocation } from "react-router-dom";
@@ -29,11 +29,18 @@ const Header = () => {
         alignItems="center"
         justifyContent="space-between"
         sx={{
-          padding: "8px 32px",
+          padding: {
+            md: "8px 32px",
+            xs: "8px 8px",
+          },
           borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         }}
       >
-        <Typography textTransform="capitalize" width="15%">
+        <IconButton sx={{ display: { xs: "block", md: "none" } }}>
+          <img src={menu} alt="" />
+        </IconButton>
+
+        <Typography textTransform="capitalize">
           {pathname === "/" ? "Home" : pathname.substring(1)}
         </Typography>
 
@@ -43,7 +50,7 @@ const Header = () => {
             placeholder="Search"
             autoComplete="off"
             InputProps={{
-              sx: { borderRadius: 5 },
+              sx: { borderRadius: 5, display: { xs: "none" } },
               startAdornment: (
                 <InputAdornment position="start">
                   <img

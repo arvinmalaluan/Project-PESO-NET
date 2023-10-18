@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 import TextF from "./textF";
 import register from "./../../utils/registration";
+import signupimg from "./../../assets/signup-img.jpg";
 
 function Signup() {
   const navigate = useNavigate();
@@ -65,19 +66,30 @@ function Signup() {
 
   return (
     <>
-      <Grid item md={6} sm={12}>
-        <p>Simple Hi</p>
+      <Grid item md={6} sm={12} sx={{ display: { xs: "none", md: "block" } }}>
+        <Stack height="100vh" sx={{ overflow: "hidden" }}>
+          <img src={signupimg} style={{ height: "100%" }} alt="" />
+        </Stack>
       </Grid>
       <Grid
         item
         md={6}
         sm={12}
         height="100vh"
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+        }}
       >
-        <Stack width="60%" m="auto" spacing={4}>
+        <Stack
+          m="auto"
+          spacing={4}
+          sx={{ width: { xs: "80%", md: "60%" }, paddingBlock: 5 }}
+        >
           <Stack spacing={0.5}>
-            <Typography fontSize={20} fontWeight={500}>
+            <Typography fontSize={24} fontWeight={700}>
               Welcome to PESO, <br /> User
             </Typography>
 
@@ -145,10 +157,10 @@ function Signup() {
           <Button
             disableElevation
             variant="contained"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", bgcolor: "#0891b2" }}
             onClick={handleClick}
           >
-            Sign in
+            Sign up
           </Button>
 
           <Stack>

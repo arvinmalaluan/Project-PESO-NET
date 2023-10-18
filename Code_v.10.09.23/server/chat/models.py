@@ -14,6 +14,7 @@ class Conversation(models.Model):
     involve_two_name = models.CharField(max_length=200, null=True, blank=True)
     profile_one = models.ImageField(null=True, blank=True, upload_to='images/')
     profile_two = models.ImageField(null=True, blank=True, upload_to='images/')
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def save(self, *args, **kwargs):
         val = ''

@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 import TextF from "./textF";
 import AuthContext from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import loginimg from "./../../assets/login-img.jpg";
 
 function Login() {
   const navigate = useNavigate();
@@ -29,19 +30,30 @@ function Login() {
 
   return (
     <>
-      <Grid item md={6} sm={12}>
-        <p>Simple hello </p>
+      <Grid item md={6} sx={{}}>
+        <Stack height="100%" sx={{ overflow: "hidden" }}>
+          <img
+            src={loginimg}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+            alt=""
+          />
+        </Stack>
       </Grid>
       <Grid
         item
         md={6}
         sm={12}
-        height="100vh"
-        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+        sx={{
+          height: { xs: "80vh", md: "100vh" },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: "100%",
+        }}
       >
-        <Stack width="60%" m="auto" spacing={5}>
+        <Stack sx={{ width: { xs: "80%", md: "60%" } }} spacing={5}>
           <Stack spacing={0.5}>
-            <Typography fontSize={20} fontWeight={500}>
+            <Typography fontSize={24} fontWeight={700}>
               Welcome back, <br /> User
             </Typography>
 
@@ -73,7 +85,7 @@ function Login() {
           <Button
             disableElevation
             variant="contained"
-            sx={{ textTransform: "none" }}
+            sx={{ textTransform: "none", bgcolor: "#0891b2" }}
             onClick={handleClick}
           >
             Sign in

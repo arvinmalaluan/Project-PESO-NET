@@ -13,6 +13,7 @@ const NewMessages = () => {
 
   const [messages, setMessages] = useState([]);
   const [activeMessage, setActiveMessage] = useState("");
+  const [details, setDetails] = useState([]);
 
   useEffect(() => {
     const socket = new WebSocket(
@@ -41,8 +42,6 @@ const NewMessages = () => {
       text.length !== undefined
         ? setMessages(text)
         : setMessages((prev) => [...prev, if_new]);
-
-      console.log(if_new);
     };
 
     socket.onclose = function (event) {
@@ -81,6 +80,7 @@ const NewMessages = () => {
               messages={messages}
               active={activeMessage}
               set={setActiveMessage}
+              setDetails={setDetails}
               id={user_id}
             />
           </Stack>
@@ -97,7 +97,7 @@ const NewMessages = () => {
       </Grid>
       <Grid item md={8.5} sx={{ height: "100%" }}>
         {activeMessage && activeMessage !== -1 && (
-          <MessageDetails id={activeMessage} />
+          <MessageDetails id={activeMessage} details={details} />
         )}
         {activeMessage === -1 && (
           <CreateNew existing={messages} set={setActiveMessage} />
@@ -139,11 +139,25 @@ const SearchField = () => {
   );
 };
 
-const Messages = ({ messages, set, active, id }) => {
+const Messages = ({ messages, set, active, id, setDetails }) => {
   const Message = ({ details, id }) => {
-    const handleClick = (custom_key) => {
-      set(custom_key);
-      console.log(custom_key);
+    const handleClick = (details) => {
+      set(details.custom_key);
+
+      const name =
+        details.involve_one === id
+          ? details.involve_two_name
+          : details.involve_one_name;
+
+      const profile =
+        details.involve_one === id
+          ? details.involve_two_profile
+          : details.involve_one_profile;
+
+      const receiver =
+        details.involve_one === id ? details.involve_two : details.involve_one;
+
+      setDetails({ name: name, profile: profile, receiver: receiver });
     };
 
     return (
@@ -154,7 +168,7 @@ const Messages = ({ messages, set, active, id }) => {
           marginBottom: "5px",
           bgcolor: active === details.custom_key ? "whitesmoke" : "",
         }}
-        onClick={() => handleClick(details.custom_key)}
+        onClick={() => handleClick(details)}
       >
         <Avatar sx={{ height: 48, width: 48 }} />
         <Stack ml={2}>

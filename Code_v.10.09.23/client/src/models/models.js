@@ -21,3 +21,17 @@ export const accountModel = {
   password: null,
   conf_password: null,
 };
+
+export const jobPostModel = {
+  job_title: "unset",
+  emp_type: "unset",
+  req_expi: "unset",
+  req_educ: "unset",
+  job_desc: "unset",
+  contact_info: "unset",
+  app_duedate: "unset",
+  qualifications: "unset",
+  responsibilities: "unset",
+  benefits: "unset",
+  salary: "unset",
+};

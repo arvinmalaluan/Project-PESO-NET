@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Post, Comments, Engagement, Resume, AllProfile
+from userFolder.models import Account
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -39,4 +40,12 @@ class PostDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
+        fields = '__all__'
+
+
+class AccWithProfSerializer(serializers.ModelSerializer):
+    allprofile = ProfileSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Account
         fields = '__all__'

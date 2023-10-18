@@ -7,11 +7,6 @@ import { useEffect, useState } from "react";
 
 const NewCommunity = () => {
   const [posts, setPosts] = useState([]);
-  const [dummy, setDummy] = useState([]);
-
-  useEffect(() => {
-    console.log(dummy);
-  }, [dummy]);
 
   useEffect(() => {
     const socket = new WebSocket(`ws://localhost:8000/community/broadcast`);
@@ -39,9 +34,6 @@ const NewCommunity = () => {
       text.length !== undefined
         ? setPosts(text)
         : setPosts((prev) => [...prev, if_new]);
-
-      // setPosts(get_data.text);
-      console.log(text);
     };
 
     socket.onclose = function (event) {
@@ -51,7 +43,10 @@ const NewCommunity = () => {
 
   return (
     <>
-      <Grid container sx={{ height: "100%", padding: "16px 32px 0" }}>
+      <Grid
+        container
+        sx={{ height: "100%", padding: "16px 32px 0", bgcolor: "#fff" }}
+      >
         <Grid item md={3} sx={{ height: "100%", paddingRight: "32px" }}>
           <Stack sx={{ height: "100%" }}>
             <Activities />
@@ -63,8 +58,8 @@ const NewCommunity = () => {
           sx={{ height: "100%", paddingInline: "8px", overflowY: "scroll" }}
         >
           <NewPost />
-          <Stack spacing={1} mb={2}>
-            {posts.reverse().map((item, idx) => {
+          <Stack mb={2} flexDirection="column-reverse">
+            {posts.map((item, idx) => {
               return <Posts key={idx} details={item} />;
             })}
           </Stack>
