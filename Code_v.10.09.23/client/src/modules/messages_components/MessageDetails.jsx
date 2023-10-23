@@ -31,8 +31,6 @@ const MessageDetails = ({ id, details }) => {
   const [socket, setSocket] = useState(null);
   const [showMore, setShowMore] = useState(false);
 
-  console.log(details);
-
   useEffect(() => {
     const socket = new WebSocket(`ws://localhost:8000/get-my-convo/${id}`);
 
@@ -96,8 +94,8 @@ const MessageDetails = ({ id, details }) => {
   }, [id]);
 
   return (
-    <Grid container sx={{ height: "100%" }}>
-      <Grid item md={showMore ? 8 : 12} sx={{ height: "100%" }}>
+    <Grid container sx={{ height: "100%", width: "100%" }}>
+      <Grid item md={showMore ? 8 : 12} sx={{ height: "100%", width: "100%" }}>
         <Stack sx={{ height: "100%", bgcolor: "#fff" }}>
           <Stack
             direction="row"
@@ -168,7 +166,7 @@ const FileHeader = ({ open, setOpen, info }) => {
         sx={{ height: "100%" }}
       >
         <Avatar
-          src={info.profile ? info.profile : ""}
+          src={info.profile ? `http://127.0.0.1:8000/${info.profile}` : ""}
           sx={{ height: 30, width: 30 }}
         />
         <Typography fontSize={14}>{info.name}</Typography>
@@ -385,7 +383,7 @@ const ConversationInformation = ({ info }) => {
         }}
       >
         <Avatar
-          src={info.profile ? info.profile : ""}
+          src={info.profile ? `http://127.0.0.1:8000/${info.profile}` : ""}
           sx={{
             height: 72,
             width: 72,

@@ -1,7 +1,7 @@
 from django.urls import path
-from .views import PostList, PostDetail, Comment, EngagementSetter, ResumePost, ProfilePost, ResumePut, ProfilePut, EngagementPut, CommentPut, GetAll, PWRoles, GAUWP, get_unique_users_last_three_days
+from .views import PostList, PostDetail, Comment, EngagementSetter, ResumePost, ProfilePost, ResumePut, ProfilePut, EngagementPut, CommentPut, GetAll, PWRoles, GAUWP, get_unique_users_last_three_days, get_post_with_profiles
 
-from chat.views import create_new_message, Conversation, Messages
+from chat.views import create_new_message, Conversation, Messages, ConversationUpdate
 
 urlpatterns = [
     path('create-post', PostList.as_view()),
@@ -25,6 +25,9 @@ urlpatterns = [
     path('get-w-roles', PWRoles.as_view()),
     path('get-messages/', Messages.as_view()),
     path('get-messages/hey', Conversation.as_view()),
+    path('get-messages/hey/<int:custom_key>', ConversationUpdate.as_view()),
     path('hey', GetAll.as_view()),
+
+    path('test', get_post_with_profiles)
 
 ]

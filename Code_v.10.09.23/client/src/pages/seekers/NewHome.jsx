@@ -52,44 +52,59 @@ const NewHome = () => {
   }, []);
 
   return (
-    <Grid container height="100%" sx={{ paddingInline: 4 }}>
-      <Grid item md={9} height="100%" sx={{ paddingRight: 4 }}>
-        <Stack>
-          <Typography fontWeight={700} mt={2} mb={1}>
-            Recommended jobs for you
-          </Typography>
-          <Grid container spacing={2}>
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-          </Grid>
-        </Stack>
+    <Grid
+      container
+      height="100%"
+      columnSpacing={4}
+      sx={{ paddingInline: { md: 4, xs: 0 } }}
+    >
+      <Grid item md={8} height="100%">
+        <Stack
+          height="100%"
+          sx={{ overflowY: "scroll", paddingInline: { xs: 2 } }}
+        >
+          <Stack>
+            <Typography fontWeight={700} mt={2} mb={1}>
+              Recommended jobs for you
+            </Typography>
+            <Grid container spacing={2}>
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+            </Grid>
+          </Stack>
 
-        <Stack>
-          <Typography fontWeight={700} mt={4} mb={1}>
-            Recently created job posts
-          </Typography>
-          <Grid container spacing={2}>
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-            <LeftSection />
-          </Grid>
-        </Stack>
+          <Stack>
+            <Typography fontWeight={700} mt={4} mb={1}>
+              Recently created job posts
+            </Typography>
+            <Grid container spacing={2}>
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+              <LeftSection />
+            </Grid>
+          </Stack>
 
-        <Stack>
-          <Typography fontWeight={700} mt={4} mb={1}>
-            Manage Applications
-          </Typography>
+          <Stack sx={{ width: "100%" }}>
+            <Typography fontWeight={700} mt={4} mb={1}>
+              Manage Applications
+            </Typography>
 
-          <TableOfApplications details={myJobs} id={user_id} />
+            <TableOfApplications details={myJobs} id={user_id} />
+          </Stack>
         </Stack>
       </Grid>
 
-      <Grid item md={3} height="100%">
+      <Grid
+        item
+        md={4}
+        height="100%"
+        sx={{ display: { xs: "none", md: "flex" } }}
+      >
         <Stack height="100%" mt={2}>
           <Typography fontWeight={700}>Trending in community</Typography>
           <TrendingSection />
@@ -103,7 +118,7 @@ export default NewHome;
 
 const LeftSection = ({ details }) => {
   return (
-    <Grid item md={6}>
+    <Grid item md={6} xs={12}>
       <Stack>
         <LeftItems />
       </Stack>
@@ -150,7 +165,10 @@ const TableOfApplications = ({ details, id }) => {
 
   return (
     <Stack
-      sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "5px" }}
+      sx={{
+        border: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRadius: "5px",
+      }}
     >
       <Table sx={{ bgcolor: "transparent" }}>
         <TableHead>

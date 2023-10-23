@@ -36,13 +36,23 @@ const Header = () => {
           borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
         }}
       >
-        <IconButton sx={{ display: { xs: "block", md: "none" } }}>
-          <img src={menu} alt="" />
-        </IconButton>
+        <Stack direction="row" spacing={1} alignItems="center">
+          <IconButton
+            size="small"
+            sx={{
+              display: { xs: "block", md: "none" },
+              height: 32,
+              width: 32,
+              alignItems: "center",
+            }}
+          >
+            <img src={menu} alt="" />
+          </IconButton>
 
-        <Typography textTransform="capitalize">
-          {pathname === "/" ? "Home" : pathname.substring(1)}
-        </Typography>
+          <Typography textTransform="capitalize">
+            {pathname === "/" ? "Home" : pathname.substring(1)}
+          </Typography>
+        </Stack>
 
         <Stack direction="row" spacing={3}>
           <TextField
@@ -81,7 +91,11 @@ const Header = () => {
           <Stack direction="row" spacing={0.5}>
             <IconButton
               size="small"
-              sx={{ height: 40, width: 40 }}
+              sx={{
+                height: 40,
+                width: 40,
+                display: { xs: "none", md: "block" },
+              }}
               onClick={openAvatar}
               id="notif-btn"
             >
@@ -90,7 +104,11 @@ const Header = () => {
 
             <IconButton
               size="small"
-              sx={{ height: 40, width: 40 }}
+              sx={{
+                height: 40,
+                width: 40,
+                display: { xs: "none", md: "block" },
+              }}
               onClick={openAvatar}
               id="message-btn"
             >

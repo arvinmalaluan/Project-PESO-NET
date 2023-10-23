@@ -36,7 +36,8 @@ const HomeAdmin = () => {
               title={"Users Overview"}
               count={upperStat && upperStat.tu}
               subtitle={`${
-                upperStat && upperStat.users[0].unique_user_count
+                // upperStat && upperStat.users[0].unique_user_count
+                0
               } new users today`}
             />
           </Grid>
@@ -45,7 +46,8 @@ const HomeAdmin = () => {
               title={"Waiting for Verifications"}
               count={upperStat && upperStat.tp}
               subtitle={`${
-                upperStat && upperStat.pending[0].unique_user_count
+                // upperStat && upperStat.pending[0].unique_user_count
+                0
               } new pending request today`}
             />
           </Grid>
@@ -54,7 +56,8 @@ const HomeAdmin = () => {
               title={"Message Activity"}
               count={upperStat && upperStat.tm}
               subtitle={`${
-                upperStat && upperStat.pending[0].unique_user_count
+                // upperStat && upperStat.pending[0].unique_user_count
+                0
               } new message today`}
             />
           </Grid>

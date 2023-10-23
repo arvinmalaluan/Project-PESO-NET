@@ -10,6 +10,7 @@ import {
   grid,
   file_text,
   users,
+  search_icon,
 } from "./image_imports";
 
 export const default_data = {
@@ -127,8 +128,8 @@ export const default_data = {
   ],
 
   job_related_recruiters: [
-    { id: 4, name: "Job Posts", icon: "", path: "/manage-jobs" },
-    { id: 5, name: "Find Talents", icon: "", path: "/applicants" },
+    { id: 4, name: "Job Posts", icon: search_icon, path: "/manage-jobs" },
+    { id: 5, name: "Find Talents", icon: search_icon, path: "/applicants" },
   ],
 
   navigation_admin: [

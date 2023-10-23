@@ -58,7 +58,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <Grid container>
+        <Grid container height="100%">
           {is_authenticated ? (
             <>
               <Grid
@@ -76,7 +76,7 @@ function App() {
               >
                 <SideNavigation />
               </Grid>
-              <Grid item md={10} sm={12}>
+              <Grid item md={10} sm={12} height="100%" width="100%">
                 <Header />
                 <Stack
                   sx={{
@@ -94,7 +94,7 @@ function App() {
                         <Route path="/reports" element={<Reports />} />
 
                         <Route path="/settings" element={<NewSettings />}>
-                          <Route path="account" element={<AccountSettings />} />
+                          <Route index element={<AccountSettings />} />
                           <Route
                             path="personal"
                             element={<PersonalDetails />}
@@ -113,14 +113,14 @@ function App() {
                         <Route path="/status" element={<NewStatus />} />
 
                         <Route path="/documents" element={<NewDocuments />}>
-                          <Route path="resume" element={<Resume />} />
+                          <Route index element={<Resume />} />
                           <Route path="tor" element={<TOR />} />
                           <Route path="psa" element={<PSA />} />
                           <Route path="nbi" element={<NBI />} />
                         </Route>
 
                         <Route path="/settings" element={<NewSettings />}>
-                          <Route path="account" element={<AccountSettings />} />
+                          <Route index element={<AccountSettings />} />
                           <Route
                             path="personal"
                             element={<PersonalDetails />}
@@ -141,7 +141,7 @@ function App() {
                         />
 
                         <Route path="/settings" element={<NewSettings />}>
-                          <Route path="account" element={<AccountSettings />} />
+                          <Route index element={<AccountSettings />} />
                           <Route
                             path="personal"
                             element={<PersonalDetails />}

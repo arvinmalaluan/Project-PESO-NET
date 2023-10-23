@@ -49,7 +49,7 @@ const NewPost = () => {
           spacing={2}
           sx={{
             borderRadius: "5px",
-            mb: 1.5,
+            mb: { md: 1.5, xs: 0 },
           }}
         >
           <Avatar src={profileDetails.profile} sx={{ height: 37, width: 37 }} />
@@ -73,9 +73,14 @@ const NewPost = () => {
           />
         </Stack>
 
-        <Divider />
+        <Divider sx={{ display: { xs: "none", md: "flex" } }} />
 
-        <Stack direction="row" spacing={1} mt={1.5}>
+        <Stack
+          direction="row"
+          spacing={1}
+          mt={1.5}
+          sx={{ display: { xs: "none", md: "flex" } }}
+        >
           <Stack
             direction="row"
             alignItems="center"

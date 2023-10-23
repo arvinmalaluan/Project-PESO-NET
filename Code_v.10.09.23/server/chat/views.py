@@ -3,6 +3,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
 from django.db import transaction
+from django.shortcuts import get_object_or_404
 
 from . import models
 from . import serializers
@@ -17,6 +18,15 @@ class Messages(generics.ListCreateAPIView):
 class Conversation(generics.ListCreateAPIView):
     queryset = models.Conversation.objects.all()
     serializer_class = serializers.Conversation
+
+
+class ConversationUpdate(generics.RetrieveUpdateAPIView):
+    queryset = models.Conversation.objects.all()
+    serializer_class = serializers.Conversation
+
+    def get_object(self):
+        custom_key = self.kwargs['custom_key']
+        return get_object_or_404(models.Conversation, custom_key=custom_key)
 
 
 @api_view(['POST'])

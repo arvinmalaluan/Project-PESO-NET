@@ -7,9 +7,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TextField,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProfilesWithRole } from "../../context/CRUD_Operations";
+import ButtonSort from "../../modules/common_components/ButtonSort";
+import { TableFooter as CustomTableFooter } from "./ManageJobs";
 
 const ManageApplicants = () => {
   const [selected, setSelected] = useState({});
@@ -43,34 +46,94 @@ const TableForApplicants = ({ selected, setSelected }) => {
   }, []);
 
   return (
-    <Stack sx={{ border: "1px solid rgba(0, 0, 0, 0.12)" }}>
-      <Table sx={{ bgcolor: "white" }}>
-        <TableHead>
-          <TableRow
+    <>
+      <Stack direction="row" pb={2} sx={{ justifyContent: "space-between" }}>
+        <TextField
+          placeholder="Search"
+          size="small"
+          InputProps={{
+            sx: {
+              width: "100%",
+              borderRadius: "5px",
+              bgcolor: "whitesmoke",
+              paddingLeft: 1,
+              fontSize: 14,
+            },
+          }}
+          sx={{
+            "& fieldset": { border: "none" },
+          }}
+        />
+        <Stack direction="row" spacing={1}>
+          <Button
+            variant="contained"
+            disableElevation
             sx={{
-              "& .MuiTableCell-sizeMedium": {
-                padding: "10px 16px",
-                color: "#64748b",
-                fontWeight: "600",
-                fontSize: 14,
+              textTransform: "none",
+              bgcolor: "#fff",
+              border: "1px solid rgba(0, 0, 0, 0.12)",
+              color: "#000",
+              "&:hover": {
+                bgcolor: "whitesmoke",
               },
             }}
           >
-            <TableCell>Name</TableCell>
-            <TableCell>Age</TableCell>
-            <TableCell>Location</TableCell>
-            <TableCell>Email Address</TableCell>
-            <TableCell>Educational Attainment</TableCell>
-          </TableRow>
-        </TableHead>
+            Filter
+          </Button>
 
-        <TableBody>
-          {seekers.map((item, idx) => {
-            return <TableBodySingleData key={idx} details={item} />;
-          })}
-        </TableBody>
-      </Table>
-    </Stack>
+          <Button
+            variant="contained"
+            disableElevation
+            sx={{
+              textTransform: "none",
+              bgcolor: "#fff",
+              border: "1px solid rgba(0, 0, 0, 0.12)",
+              color: "#000",
+              "&:hover": {
+                bgcolor: "whitesmoke",
+              },
+            }}
+          >
+            Export
+          </Button>
+        </Stack>
+      </Stack>
+
+      <Stack
+        sx={{ border: "1px solid rgba(0, 0, 0, 0.12)", borderRadius: "5px" }}
+      >
+        <Table sx={{ bgcolor: "transparent" }}>
+          <TableHead>
+            <TableRow
+              sx={{
+                "& .MuiTableCell-sizeMedium": {
+                  padding: "10px 16px",
+                  color: "#64748b",
+                  fontWeight: "600",
+                  fontSize: 14,
+                },
+              }}
+            >
+              <TableCell>Name</TableCell>
+              <TableCell>
+                <ButtonSort name="Age" />
+              </TableCell>
+              <TableCell>Location</TableCell>
+              <TableCell>Email Address</TableCell>
+              <TableCell>Educational Attainment</TableCell>
+              <TableCell>Assessed Position</TableCell>
+            </TableRow>
+          </TableHead>
+
+          <TableBody>
+            {seekers.map((item, idx) => {
+              return <TableBodySingleData key={idx} details={item} />;
+            })}
+          </TableBody>
+        </Table>
+      </Stack>
+      <CustomTableFooter />
+    </>
   );
 };
 
@@ -89,6 +152,7 @@ const TableBodySingleData = ({ details }) => {
       <TableCell>{details.location}</TableCell>
       <TableCell>{details.name}</TableCell>
       <TableCell>{details.educational_attainment}</TableCell>
+      <TableCell>---</TableCell>
     </TableRow>
   );
 };

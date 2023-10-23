@@ -30,7 +30,7 @@ function Login() {
 
   return (
     <>
-      <Grid item md={6} sx={{}}>
+      <Grid item md={6} sm={12} sx={{}}>
         <Stack height="100%" sx={{ overflow: "hidden" }}>
           <img
             src={loginimg}

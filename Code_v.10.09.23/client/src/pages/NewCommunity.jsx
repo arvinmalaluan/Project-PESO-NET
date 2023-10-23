@@ -41,36 +41,62 @@ const NewCommunity = () => {
     };
   }, []);
 
+  console.log(posts);
+
   return (
-    <>
+    <Grid
+      container
+      sx={{
+        height: "100%",
+        width: "100%",
+        paddingInline: 4,
+        pt: 2,
+      }}
+    >
       <Grid
-        container
-        sx={{ height: "100%", padding: "16px 32px 0", bgcolor: "#fff" }}
+        item
+        md={3}
+        sx={{
+          height: "100%",
+          paddingRight: "32px",
+          display: { xs: "none", md: "flex" },
+        }}
       >
-        <Grid item md={3} sx={{ height: "100%", paddingRight: "32px" }}>
-          <Stack sx={{ height: "100%" }}>
-            <Activities />
-          </Stack>
-        </Grid>
-        <Grid
-          item
-          md={6}
-          sx={{ height: "100%", paddingInline: "8px", overflowY: "scroll" }}
-        >
-          <NewPost />
-          <Stack mb={2} flexDirection="column-reverse">
-            {posts.map((item, idx) => {
-              return <Posts key={idx} details={item} />;
-            })}
-          </Stack>
-        </Grid>
-        <Grid item md={3} sx={{ height: "100%", paddingLeft: "32px" }}>
-          <Stack sx={{ height: "100%" }}>
-            <TrendingPosts />
-          </Stack>
-        </Grid>
+        <Stack sx={{ height: "100%" }}>
+          <Activities />
+        </Stack>
       </Grid>
-    </>
+      <Grid
+        item
+        md={6}
+        sx={{
+          height: "100%",
+          overflowY: "scroll",
+          width: "100%",
+          pt: 2,
+        }}
+      >
+        <NewPost />
+        <Stack mb={2} flexDirection="column-reverse">
+          {posts.map((item, idx) => {
+            return <Posts key={idx} details={item} />;
+          })}
+        </Stack>
+      </Grid>
+      <Grid
+        item
+        md={3}
+        sx={{
+          height: "100%",
+          paddingLeft: "32px",
+          display: { xs: "none", md: "flex" },
+        }}
+      >
+        <Stack sx={{ height: "100%" }}>
+          <TrendingPosts />
+        </Stack>
+      </Grid>
+    </Grid>
   );
 };
 

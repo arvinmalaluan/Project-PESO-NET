@@ -29,14 +29,17 @@ class AllProfile(models.Model):
 
 
 class Post(models.Model):
-    profile = models.ForeignKey(AllProfile, on_delete=models.CASCADE)
+    profile = models.ForeignKey(
+        AllProfile, on_delete=models.CASCADE, related_name='allprofile')
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     description = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
     poster_name = models.CharField(max_length=100, blank=True)
+    poster_profile = models.ImageField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.poster_name = self.profile.name
+        self.poster_profile = self.profile.photo
         super().save(*args, **kwargs)
 
 

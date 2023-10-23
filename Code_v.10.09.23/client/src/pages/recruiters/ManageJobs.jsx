@@ -36,6 +36,7 @@ import { getJobs, updateJobPost } from "../../context/CRUD_Operations";
 import jwtDecode from "jwt-decode";
 import { format_date } from "../../utils/format_date";
 import Applicants from "../../modules/saved_jobs_components/Applicants";
+import ButtonSort from "../../modules/common_components/ButtonSort";
 
 const ManageJobs = () => {
   const [create, setCreate] = useState(false);
@@ -47,7 +48,9 @@ const ManageJobs = () => {
       ) : (
         <Grid item md={12}>
           <TableForJobs setCreate={setCreate} />
-          <TableFooter />
+          <Stack mr={4}>
+            <TableFooter />
+          </Stack>
         </Grid>
       )}
     </Grid>
@@ -172,7 +175,9 @@ const TableForJobs = ({ setCreate }) => {
                 <TableCell>Job Title</TableCell>
                 <TableCell>Status</TableCell>
                 <TableCell>Applicants</TableCell>
-                <TableCell>Date Created</TableCell>
+                <TableCell>
+                  <ButtonSort name="Date Created" />
+                </TableCell>
                 <TableCell>Deadline</TableCell>
                 <TableCell align="center">Actions</TableCell>
               </TableRow>
@@ -235,10 +240,9 @@ const TableBodyTemplate = ({ details }) => {
           <TableCell>{holder.job_title}</TableCell>
           <TableCell
             sx={{
-              color: get_color(holder.status),
+              bgcolor: get_color(holder.status),
             }}
           >
-            {"• "}
             {holder.status}
           </TableCell>
           <TableCell>{holder.applicants.length}</TableCell>
@@ -266,7 +270,7 @@ const TableBodyTemplate = ({ details }) => {
   );
 };
 
-const TableFooter = () => {
+export const TableFooter = () => {
   const NewIB = ({ img }) => {
     return (
       <IconButton
@@ -281,7 +285,6 @@ const TableFooter = () => {
     <Stack
       mt={2}
       pb={5}
-      mr={4}
       direction="row"
       alignItems="center"
       justifyContent="end"

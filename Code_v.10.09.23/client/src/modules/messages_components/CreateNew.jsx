@@ -55,7 +55,7 @@ const CreateNew = ({ existing, set }) => {
 
   return (
     <>
-      <Stack sx={{ height: "100%", bgcolor: "#fff" }}>
+      <Stack sx={{ height: "100%" }}>
         <Stack
           direction="row"
           spacing={2}

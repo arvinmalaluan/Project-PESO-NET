@@ -50,17 +50,18 @@ const NewMessages = () => {
   }, []);
 
   return (
-    <Grid container sx={{ height: "100%" }}>
+    <Grid container sx={{ height: "100%", width: "100%" }}>
       <Grid
         item
         md={3.5}
+        sm={12}
         sx={{
           height: "100%",
-          bgcolor: "#fff",
+          width: "100%",
           borderRight: "1px solid rgba(0, 0, 0, 0.12)",
         }}
       >
-        <Stack sx={{ height: "100%" }}>
+        <Stack sx={{ height: { md: "100%", xs: "97%" } }}>
           <Stack
             sx={{
               height: height_setter * 0.1,
@@ -95,7 +96,7 @@ const NewMessages = () => {
           </Stack>
         </Stack>
       </Grid>
-      <Grid item md={8.5} sx={{ height: "100%" }}>
+      <Grid item md={8.5} sm={12} sx={{ height: "100%", width: "100%" }}>
         {activeMessage && activeMessage !== -1 && (
           <MessageDetails id={activeMessage} details={details} />
         )}
@@ -115,12 +116,22 @@ const SearchField = () => {
       size="small"
       placeholder="Search conversation"
       autoComplete="off"
-      sx={{ paddingBlock: "16px 16px", paddingInline: "32px 16px" }}
+      sx={{
+        paddingBlock: "16px 16px",
+        paddingInline: "32px 16px",
+        "& fieldset": { border: "none" },
+      }}
       inputProps={{
         style: { fontSize: 14 },
       }}
       InputProps={{
-        sx: { borderRadius: 5 },
+        sx: {
+          width: "100%",
+          borderRadius: "5px",
+          bgcolor: "whitesmoke",
+          paddingLeft: 1,
+          fontSize: 14,
+        },
         startAdornment: (
           <InputAdornment position="start">
             <img
@@ -129,6 +140,7 @@ const SearchField = () => {
                 height: "20px",
                 width: "20px",
                 marginRight: "10px",
+                marginLeft: "4px",
               }}
               alt=""
             />
@@ -141,21 +153,24 @@ const SearchField = () => {
 
 const Messages = ({ messages, set, active, id, setDetails }) => {
   const Message = ({ details, id }) => {
+    const [myDetails, setMyDetails] = useState(null);
+    const name =
+      details.involve_one === id
+        ? details.involve_two_name
+        : details.involve_one_name;
+
+    const profile =
+      details.involve_one === id ? details.profile_two : details.profile_one;
+
+    const receiver =
+      details.involve_one === id ? details.involve_two : details.involve_one;
+
+    useEffect(() => {
+      setMyDetails({ name: name, profile: profile });
+    }, []);
+
     const handleClick = (details) => {
       set(details.custom_key);
-
-      const name =
-        details.involve_one === id
-          ? details.involve_two_name
-          : details.involve_one_name;
-
-      const profile =
-        details.involve_one === id
-          ? details.involve_two_profile
-          : details.involve_one_profile;
-
-      const receiver =
-        details.involve_one === id ? details.involve_two : details.involve_one;
 
       setDetails({ name: name, profile: profile, receiver: receiver });
     };
@@ -170,7 +185,10 @@ const Messages = ({ messages, set, active, id, setDetails }) => {
         }}
         onClick={() => handleClick(details)}
       >
-        <Avatar sx={{ height: 48, width: 48 }} />
+        <Avatar
+          src={myDetails ? `http://127.0.0.1:8000${myDetails.profile}` : ""}
+          sx={{ height: 48, width: 48 }}
+        />
         <Stack ml={2}>
           <Typography fontSize={16}>
             {details.involve_one === id

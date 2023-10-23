@@ -12,10 +12,10 @@ const JobDetails = ({ details }) => {
   const CommonSetup = ({ title, content }) => {
     return (
       <Stack mb={1}>
-        <Typography fontSize={14} fontWeight={500}>
+        <Typography fontSize={14} fontWeight={700} color="#64748b">
           {title}
         </Typography>
-        <Typography fontSize={16} fontWeight={300}>
+        <Typography fontSize={16} fontWeight={500}>
           {content ? content : "( not set )"}
         </Typography>
       </Stack>
@@ -64,42 +64,58 @@ const JobDetails = ({ details }) => {
 
   return (
     <Stack
-      p={2}
       mb={5}
       sx={{
         border: "1px solid rgba(0, 0, 0, 0.12)",
+        borderRadius: "5px",
       }}
     >
-      <Typography>Job Information</Typography>
-      <CommonSetup title={"Job Title"} content={details.job_title} />
-      <CommonSetup title={"Employment Type"} content={details.emp_type} />
-      <CommonSetup title={"Status"} content={details.status} />
-      <CommonSetup title={"Created"} content={format_date(details.created)} />
+      <Typography
+        sx={{ paddingInline: 2, paddingBlock: 2, bgcolor: "whitesmoke" }}
+        fontWeight={600}
+      >
+        Job Information
+      </Typography>
 
-      <CommonSetup title={"Job Description"} content={details.job_desc} />
-      <CommonSetup title={"Job Location"} content={details.location} />
-      <CommonSetup title={"Salary"} content={details.salary} />
+      <Stack p={2}>
+        <CommonSetup title={"Job Title"} content={details.job_title} />
+        <CommonSetup title={"Employment Type"} content={details.emp_type} />
+        <CommonSetup title={"Status"} content={details.status} />
+        <CommonSetup title={"Created"} content={format_date(details.created)} />
 
-      <Typography mt={2}>Application Details</Typography>
-      <CommonSetup title={"Due date"} content={details.app_duedate} />
-      <CommonSetup title={"Contact us at"} content={details.contact_info} />
-      <CommonSetup title={"Required Experience"} content={details.req_expi} />
-      <CommonSetup title={"Required Education"} content={details.req_educ} />
+        <CommonSetup title={"Job Description"} content={details.job_desc} />
+        <CommonSetup title={"Job Location"} content={details.location} />
+        <CommonSetup title={"Salary"} content={details.salary} />
 
-      <Typography mt={2}>Candidate Requirements</Typography>
-      <CommonSetup title={"Skills"} content={details.skills} />
-      <CommonSetup title={"Qualifications"} content={details.qualifications} />
-      <CommonSetup
-        title={"Responsibilities"}
-        content={details.responsibilities}
-      />
-      <CommonSetup title={"Benefits"} content={details.benefits} />
+        <Typography mt={2}>Application Details</Typography>
+        <CommonSetup title={"Due date"} content={details.app_duedate} />
+        <CommonSetup title={"Contact us at"} content={details.contact_info} />
+        <CommonSetup title={"Required Experience"} content={details.req_expi} />
+        <CommonSetup title={"Required Education"} content={details.req_educ} />
 
-      <Stack direction="row" mt={5} spacing={1}>
+        <Typography mt={2}>Candidate Requirements</Typography>
+        <CommonSetup title={"Skills"} content={details.skills} />
+        <CommonSetup
+          title={"Qualifications"}
+          content={details.qualifications}
+        />
+        <CommonSetup
+          title={"Responsibilities"}
+          content={details.responsibilities}
+        />
+        <CommonSetup title={"Benefits"} content={details.benefits} />
+      </Stack>
+
+      <Stack
+        direction="row"
+        mt={5}
+        spacing={1}
+        sx={{ paddingInline: 2, paddingBottom: 2 }}
+      >
         <Button
           disableElevation
           variant="outlined"
-          sx={{ textTransform: "none", borderRadius: 5 }}
+          sx={{ textTransform: "none", borderRadius: "5px" }}
         >
           Close
         </Button>
@@ -107,7 +123,11 @@ const JobDetails = ({ details }) => {
           onClick={handleApplication}
           disableElevation
           variant="contained"
-          sx={{ textTransform: "none", borderRadius: 5 }}
+          sx={{
+            textTransform: "none",
+            borderRadius: "5px",
+            bgcolor: "#4f46e5",
+          }}
         >
           {isApplied ? "Cancel Application" : "Apply"}
         </Button>

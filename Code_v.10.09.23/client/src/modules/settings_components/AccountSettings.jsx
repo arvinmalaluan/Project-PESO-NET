@@ -77,10 +77,12 @@ const AccountSettings = () => {
 
   return (
     <Stack sx={{ padding: "16px 32px" }}>
-      <Typography fontSize={24} mb={2}>
+      <Typography fontSize={24} mb={2} fontWeight={700}>
         Account Settings
       </Typography>
-      <Typography fontSize={16}>Manage log in credentials</Typography>
+      <Typography fontSize={16} fontWeight={600}>
+        Manage log in credentials
+      </Typography>
       <Typography fontSize={12}>
         Take care of all aspects of your account information securely.
       </Typography>
@@ -144,7 +146,7 @@ const AccountSettings = () => {
         </Button>
       </Stack>
 
-      <Typography fontSize={16} mt={5}>
+      <Typography fontSize={16} mt={5} fontWeight={600}>
         Security checks
       </Typography>
       <Typography fontSize={12}>

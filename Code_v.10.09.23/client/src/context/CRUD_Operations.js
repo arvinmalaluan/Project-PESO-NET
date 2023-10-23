@@ -134,3 +134,8 @@ export const getApplication = async (id) => {
 
   return response;
 };
+
+export const hit_upd = async (id) => {
+  const response = await axios.put(`${url}/seeker/get-messages/hey/${id}`, {});
+  return response.data;
+};

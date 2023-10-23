@@ -87,7 +87,7 @@ const OpenDialog = ({ open, set, details, user_id }) => {
         </Typography>
 
         <Stack direction="row" p={2} spacing={2}>
-          <Avatar />
+          <Avatar src={details.profile} />
           <Stack>
             <Typography fontSize={16} fontWeight={500}>
               {details.name ? details.name : "loading ..."}
@@ -187,6 +187,7 @@ const OpenDialog = ({ open, set, details, user_id }) => {
                   onClick={() => {
                     setFileName("No file selected");
                     setImage(null);
+                    setFormData({ formData, image: "" });
                   }}
                 >
                   <img src={remove_icon} height={16} alt="" />
@@ -206,7 +207,7 @@ const OpenDialog = ({ open, set, details, user_id }) => {
             variant="contained"
             disableElevation
             fullWidth
-            disabled={!Boolean(formData.description)}
+            disabled={!Boolean(formData.description || formData.image)}
           >
             Post
           </Button>

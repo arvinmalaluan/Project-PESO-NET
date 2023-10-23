@@ -185,6 +185,7 @@ const Posts = ({ details }) => {
                   sx={{
                     color: liked ? "#4f46e5" : "",
                     fontWeight: liked ? 700 : 500,
+                    display: { md: "flex", xs: "none" },
                   }}
                 >
                   Like
@@ -223,6 +224,7 @@ const Posts = ({ details }) => {
                   sx={{
                     color: disliked ? "#e5464f" : "",
                     fontWeight: disliked ? 700 : 500,
+                    display: { md: "flex", xs: "none" },
                   }}
                 >
                   Dislike
@@ -268,7 +270,10 @@ const Posts = ({ details }) => {
           >
             <Stack direction="row" alignItems="center" spacing={1}>
               <img src={messagecircle} className="icon-16x16" alt="" />
-              <Typography fontSize={14} sx={{ color: "#000" }}>
+              <Typography
+                fontSize={14}
+                sx={{ color: "#000", display: { md: "flex", xs: "none" } }}
+              >
                 Write comment
               </Typography>
             </Stack>

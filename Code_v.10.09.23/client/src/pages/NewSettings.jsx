@@ -23,7 +23,7 @@ const NewSettings = () => {
           id="1"
           title="Account Settings"
           subtitle="Fine-tune your account details."
-          path="account"
+          path=""
         />
 
         <CustomMenuItem
@@ -58,7 +58,7 @@ const CustomMenuItem = ({ id, title, subtitle, path }) => {
       <Stack spacing={2} direction="row" alignItems="center">
         <Chip label={id} sx={{ height: 40, width: 40 }} />
         <Stack>
-          <Typography>{title}</Typography>
+          <Typography fontWeight={600}>{title}</Typography>
           <Typography fontWeight={300} fontSize={12}>
             {subtitle}
           </Typography>

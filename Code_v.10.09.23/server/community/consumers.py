@@ -33,8 +33,12 @@ class CommunityConsumer(WebsocketConsumer):
                     'comments', 'engagements').order_by('-created')
                 serializer = serializers.PostDetailsSerializer(
                     posts, many=True)
+                data = serializer.data
 
-                self.send_chat_message(serializer.data)
+                for post_data in data:
+                    post_data['puwet'] = 'Hi'
+
+                self.send_chat_message(data)
 
             except:
                 print('error occured')

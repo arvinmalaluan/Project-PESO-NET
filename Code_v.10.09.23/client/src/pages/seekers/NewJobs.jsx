@@ -23,6 +23,7 @@ const NewJobs = () => {
   const [active, setActive] = useState(false);
   const [jobs, setJobs] = useState([]);
   const [activeDetails, setActiveDetails] = useState({});
+  const [actTab, setActTab] = useState(0);
 
   useEffect(() => {
     getAllJobs()
@@ -42,9 +43,45 @@ const NewJobs = () => {
     >
       <Grid item md={12} sx={{ height: "100%", paddingInline: 4 }}>
         <Stack direction="row" spacing={1} pt={2}>
-          <Chip label="All" />
-          <Chip label="Hot Picks" />
-          <Chip label="Recommended" />
+          <Chip
+            label="All"
+            onClick={() => setActTab(0)}
+            sx={{
+              bgcolor: actTab === 0 && "#4f46e5",
+              color: actTab === 0 && "#fff",
+              borderRadius: "5px",
+              "&:hover": {
+                bgcolor: "#4f46e5",
+                color: "#fff",
+              },
+            }}
+          />
+          <Chip
+            label="Hot Picks"
+            onClick={() => setActTab(1)}
+            sx={{
+              bgcolor: actTab === 1 && "#4f46e5",
+              color: actTab === 1 && "#fff",
+              borderRadius: "5px",
+              "&:hover": {
+                bgcolor: "#4f46e5",
+                color: "#fff",
+              },
+            }}
+          />
+          <Chip
+            label="Recommended"
+            onClick={() => setActTab(2)}
+            sx={{
+              bgcolor: actTab === 2 && "#4f46e5",
+              color: actTab === 2 && "#fff",
+              borderRadius: "5px",
+              "&:hover": {
+                bgcolor: "#4f46e5",
+                color: "#fff",
+              },
+            }}
+          />
         </Stack>
 
         <Stack pt={2} direction="row" spacing={1}>
@@ -52,10 +89,15 @@ const NewJobs = () => {
             placeholder="Search company name or job title"
             size="small"
             fullWidth
+            sx={{
+              "& fieldset": { border: "none" },
+            }}
             InputProps={{
               sx: {
                 fontSize: 14,
                 borderRadius: 4,
+                borderRadius: "5px",
+                bgcolor: "whitesmoke",
               },
               startAdornment: (
                 <InputAdornment position="start">
@@ -69,14 +111,30 @@ const NewJobs = () => {
               ),
             }}
           />
-          <IconButton sx={{ bgcolor: "whitesmoke" }}>
-            <img src={filter_icon} className="icon-20x20" alt="" />
+          <IconButton
+            sx={{
+              bgcolor: "#4f46e5",
+              borderRadius: "5px",
+              "&:hover": { bgcolor: "#4f46e5" },
+            }}
+          >
+            <img
+              src={filter_icon}
+              style={{
+                filter:
+                  "invert(96%) sepia(100%) saturate(14%) hue-rotate(228deg) brightness(102%) contrast(100%)",
+              }}
+              className="icon-20x20"
+              alt=""
+            />
           </IconButton>
         </Stack>
 
         <Stack mt={3}>
-          <Typography fontSize={14}>Recent Posts</Typography>
-          <Typography fontSize={12} fontWeight={300} mb={2}>
+          <Typography fontSize={16} fontWeight={600}>
+            Recent Posts
+          </Typography>
+          <Typography fontSize={12} fontWeight={400} mb={2}>
             A new opportunity indeed!
           </Typography>
 
@@ -124,10 +182,10 @@ const JobLists = ({ setActive, details, setActiveDetails, activeDetails }) => {
         paddingBlock: 2,
         border: "1px solid rgba(0, 0, 0, 0.12)",
         borderRadius: "5px",
-        bgcolor:
-          activeDetails.id === details.id ? "rgba(8, 145, 178, 0.5)" : "",
+        // bgcolor:
+        //   activeDetails.id === details.id ? "rgba(8, 145, 178, 0.5)" : "",
         "&:hover": {
-          bgcolor: "rgba(8, 145, 178, 0.8)",
+          // bgcolor: "rgba(8, 145, 178, 0.8)",
         },
       }}
     >

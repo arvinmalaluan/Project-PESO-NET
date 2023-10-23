@@ -1,6 +1,8 @@
 from rest_framework import generics
 from django.shortcuts import get_object_or_404
+from rest_framework.decorators import api_view
 from django.db.models import Prefetch
+from rest_framework.response import Response
 
 from .models import Post, Comments, Engagement, Resume, AllProfile
 from .serializers import PostSerializer, CommentsSerializer, EngagementSerializer, ResumeSerializer, ProfileSerializer, PostDetailsSerializer, AccWithProfSerializer
@@ -177,11 +179,7 @@ def get_unique_users_last_three_days(request):
     return JsonResponse(data, safe=False)
 
 
-{
-    "email": "arvinmalaluan7@gmail.com",
-    "username": "newuser",
-    "password": "pbkdf2_sha256$600000$1JrrsUBcPPEyksqCH9tEZC$KUlRs2VxYSdg3XgMsIuZuwM2LM8TsXHzeoR944oizSk=",
-    "status": "allowed",
-    "created": "2023-09-21T17:15:45.973380Z",
-    "role": 2
-}
+@api_view(['GET'])
+def get_post_with_profiles(request):
+    posts = Post.objects.select_related('profile')
+    return Response({'success': 1, "token": "hello"})
